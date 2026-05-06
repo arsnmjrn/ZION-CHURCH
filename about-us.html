@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us — Zion International Pentecostal Church</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Josefin+Sans:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+/* ─── PAGE HERO ─────────────────────────────────── */
+.page-hero {
+  min-height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 80px;
+  overflow: hidden;
+}
+
+.page-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.page-hero-bg.loaded { transform: scale(1); }
+
+.page-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,12,20,0.5) 0%, rgba(8,12,20,0.85) 100%);
+}
+
+.page-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 80px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.breadcrumb a { color: var(--gold); transition: color 0.3s; }
+.breadcrumb a:hover { color: var(--white); }
+.breadcrumb .sep { color: var(--muted); }
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.05;
+}
+
+.page-title em { color: var(--gold); font-style: italic; }
+
+/* ─── MISSION ───────────────────────────────────── */
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 60px;
+}
+
+.mission-card {
+  padding: 40px 32px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  transition: all 0.4s var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-smooth);
+  transform-origin: left;
+}
+
+.mission-card:hover { 
+  transform: translateY(-8px); 
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.04);
+}
+.mission-card:hover::after { transform: scaleX(1); }
+
+.mission-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.mission-card h3 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+
+.mission-card p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+/* ─── STORY ─────────────────────────────────────── */
+.story-section {
+  background: var(--dark2);
+  position: relative;
+  overflow: hidden;
+}
+
+.story-section::before {
+  content: '';
+  position: absolute;
+  left: -200px; top: -200px;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.05), transparent 70%);
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.story-images {
+  position: relative;
+  height: 600px;
+}
+
+.story-img-1 {
+  position: absolute;
+  top: 0; left: 0;
+  width: 75%;
+  height: 70%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(201,168,76,0.2);
+}
+
+.story-img-2 {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60%;
+  height: 55%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(201,168,76,0.2);
+}
+
+.story-img-1 img, .story-img-2 img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-smooth);
+}
+
+.story-img-1:hover img, .story-img-2:hover img { transform: scale(1.06); }
+
+.story-accent {
+  position: absolute;
+  top: 50%; right: -15px;
+  transform: translateY(-50%);
+  background: var(--gold);
+  color: var(--deep);
+  padding: 20px;
+  border-radius: 4px;
+  text-align: center;
+  z-index: 2;
+  box-shadow: 0 15px 40px rgba(201,168,76,0.4);
+}
+
+.story-accent .num {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
+}
+
+.story-accent .txt {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+.timeline {
+  margin-top: 40px;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.1));
+}
+
+.timeline-item {
+  padding-left: 50px;
+  padding-bottom: 32px;
+  position: relative;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 9px; top: 4px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 15px rgba(201,168,76,0.5);
+}
+
+.timeline-year {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.timeline-text {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ─── LEADERSHIP ─────────────────────────────────── */
+.leadership-bg { background: var(--deep); }
+
+.leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 60px;
+}
+
+.leader-card {
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.1);
+  transition: all 0.4s var(--ease-smooth);
+  cursor: pointer;
+}
+
+.leader-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(201,168,76,0.4);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+.leader-img {
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+}
+
+.leader-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-smooth);
+  filter: grayscale(20%);
+}
+
+.leader-card:hover .leader-img img {
+  transform: scale(1.06);
+  filter: grayscale(0%);
+}
+
+.leader-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,12,20,0.9) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.leader-card:hover .leader-img-overlay { opacity: 1; }
+
+.leader-body {
+  padding: 24px;
+  border-top: 1px solid rgba(201,168,76,0.1);
+}
+
+.leader-role {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.leader-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--white);
+}
+
+/* ─── VALUES ─────────────────────────────────────── */
+.values-bg {
+  background: var(--dark);
+  position: relative;
+}
+
+.values-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.05), transparent 60%);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 60px;
+}
+
+.value-item {
+  display: flex;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(201,168,76,0.1);
+  transition: all 0.4s var(--ease-smooth);
+  background: rgba(255,255,255,0.02);
+}
+
+.value-item:hover {
+  border-color: rgba(201,168,76,0.35);
+  background: rgba(201,168,76,0.04);
+  transform: translateX(8px);
+}
+
+.value-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  color: rgba(201,168,76,0.2);
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.4s;
+}
+
+.value-item:hover .value-num { color: rgba(201,168,76,0.5); }
+
+.value-content h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.value-content p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 1024px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .story-images { display: none; }
+  .leaders-grid { grid-template-columns: repeat(2, 1fr); }
+  .mission-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .page-hero-content { padding: 0 24px; }
+  .leaders-grid { grid-template-columns: 1fr; }
+  .values-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-cross"></div>
+  <span class="loader-text">Loading Our Story</span>
+</div>
+
+<div class="cursor cursor-dot"></div>
+<div class="cursor cursor-ring"></div>
+<div class="page-transition"></div>
+<div class="progress-bar"></div>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-img-wrap"><img src="zipc1.jpeg" alt="ZIPC"/></div>
+    <div class="logo-text">
+      <span class="logo-name">ZIPC</span>
+      <span class="logo-tagline">Zion International Pentecostal Church</span>
+    </div>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about-us.html" class="active">About</a>
+    <a href="zion-gallery.html">Gallery</a>
+    <a href="prayer-request.html">Prayer</a>
+    <a href="form.html" class="nav-cta">Join Us</a>
+  </nav>
+  <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button onclick="closeMenu()" style="position:absolute;top:30px;right:30px;background:none;border:none;color:var(--gold);font-size:24px;cursor:pointer;"><i class="fas fa-times"></i></button>
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="about-us.html" onclick="closeMenu()">About</a>
+  <a href="zion-gallery.html" onclick="closeMenu()">Gallery</a>
+  <a href="prayer-request.html" onclick="closeMenu()">Prayer</a>
+  <a href="form.html" onclick="closeMenu()">Join Us</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('zipc15.jpg');" id="pageHeroBg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="particles"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="sep">—</span>
+      <span>About Us</span>
+    </div>
+    <h1 class="page-title">Our <em>Story,</em><br>Mission & Faith</h1>
+  </div>
+</div>
+
+<!-- MISSION -->
+<section class="section" style="background:var(--dark);" id="mission">
+  <div class="section-label reveal">Why We Exist</div>
+  <h2 class="section-title reveal">Built on <em>Purpose</em></h2>
+  <p class="section-subtitle reveal">At Zion, everything we do is anchored in the Word of God and driven by love for people.</p>
+  <div class="mission-grid stagger">
+    <div class="mission-card" data-tilt>
+      <div class="mission-icon"><i class="fas fa-crosshairs"></i></div>
+      <h3>Our Mission</h3>
+      <p>To preach the Gospel of Jesus Christ with power, make disciples of all nations, and raise a generation of Spirit-filled believers who impact their communities for God's Kingdom.</p>
+    </div>
+    <div class="mission-card" data-tilt>
+      <div class="mission-icon"><i class="fas fa-eye"></i></div>
+      <h3>Our Vision</h3>
+      <p>To be a global centre of revival, healing, and transformation — a church known for the undeniable presence of God, where every person discovers their divine purpose.</p>
+    </div>
+    <div class="mission-card" data-tilt>
+      <div class="mission-icon"><i class="fas fa-bible"></i></div>
+      <h3>Our Foundation</h3>
+      <p>We believe in the full authority of Scripture, the power of the Holy Spirit, the Lordship of Jesus Christ, and the great commission to reach every soul with the saving grace of God.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section story-section" id="story">
+  <div class="story-grid">
+    <div class="story-images reveal left">
+      <div class="story-img-1 img-zoom">
+        <img src="zipc9.jpg" alt="Church History"/>
+      </div>
+      <div class="story-img-2 img-zoom">
+        <img src="zipc17.jpg" alt="Congregation"/>
+      </div>
+      <div class="story-accent">
+        <span class="num">2006</span>
+        <span class="txt">Founded</span>
+      </div>
+    </div>
+    <div class="reveal right">
+      <div class="section-label">Our History</div>
+      <h2 class="section-title">How It All <em>Began</em></h2>
+      <p class="section-subtitle">Zion International Pentecostal Church was born from a prayer meeting, a burning desire, and an unshakeable faith that God was calling a people to His purposes in Kampala.</p>
+
+      <div class="timeline" style="margin-top:40px;">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2006 — The Beginning</div>
+          <p class="timeline-text">A small prayer group gathered in Makindye West with a vision to plant a church that would transform the community and beyond.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2010 — First Sanctuary</div>
+          <p class="timeline-text">God provided the resources to build our first permanent sanctuary. The congregation grew rapidly as signs and wonders followed the ministry.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2015 — Global Reach</div>
+          <p class="timeline-text">With members now in multiple countries, ZIPC established international connections and began streaming services online, reaching thousands globally.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2026 — Today</div>
+          <p class="timeline-text">A thriving congregation of over 500 members, active across four ministries, continuing to carry the fire of revival throughout Uganda and beyond.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section class="section leadership-bg" id="leadership">
+  <div class="section-label reveal">Servant Leaders</div>
+  <h2 class="section-title reveal">Meet Our <em>Leadership</em></h2>
+  <p class="section-subtitle reveal">Guided by men and women of faith, integrity, and passion for God's people.</p>
+
+  <div class="leaders-grid stagger">
+    <div class="leader-card" data-tilt>
+      <div class="leader-img">
+        <img src="zipc1.jpeg" alt="Senior Pastor"/>
+        <div class="leader-img-overlay"></div>
+      </div>
+      <div class="leader-body">
+        <p class="leader-role">Senior Pastor</p>
+        <h3 class="leader-name">Pastor — ZIPC</h3>
+      </div>
+    </div>
+
+    <div class="leader-card" data-tilt>
+      <div class="leader-img">
+        <img src="zipc5.jpg" alt="Associate Pastor"/>
+        <div class="leader-img-overlay"></div>
+      </div>
+      <div class="leader-body">
+        <p class="leader-role">Associate Pastor</p>
+        <h3 class="leader-name">Ministry Leadership</h3>
+      </div>
+    </div>
+
+    <div class="leader-card" data-tilt>
+      <div class="leader-img">
+        <img src="zipc14.jpg" alt="Worship Director"/>
+        <div class="leader-img-overlay"></div>
+      </div>
+      <div class="leader-body">
+        <p class="leader-role">Worship &amp; Arts Director</p>
+        <h3 class="leader-name">Worship Ministry</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section values-bg" id="values">
+  <div class="particles"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="section-label reveal">Core Beliefs</div>
+    <h2 class="section-title reveal">What We <em>Stand For</em></h2>
+    <div class="values-grid stagger">
+      <div class="value-item" data-tilt>
+        <div class="value-num">01</div>
+        <div class="value-content">
+          <h3>The Word of God</h3>
+          <p>We hold the Bible as the inspired, infallible Word of God — the supreme authority for all matters of faith, conduct, and eternal life.</p>
+        </div>
+      </div>
+      <div class="value-item" data-tilt>
+        <div class="value-num">02</div>
+        <div class="value-content">
+          <h3>Spirit-Filled Worship</h3>
+          <p>We believe in authentic, fervent worship that ushers in the presence of God and transforms lives from the inside out.</p>
+        </div>
+      </div>
+      <div class="value-item" data-tilt>
+        <div class="value-num">03</div>
+        <div class="value-content">
+          <h3>Community & Discipleship</h3>
+          <p>We are committed to raising mature disciples of Christ through intentional fellowship, mentorship, and small group communities.</p>
+        </div>
+      </div>
+      <div class="value-item" data-tilt>
+        <div class="value-num">04</div>
+        <div class="value-content">
+          <h3>Prayer & Intercession</h3>
+          <p>Prayer is the heartbeat of our church. We are a house of prayer that believes in the miraculous power of God to heal, restore, and deliver.</p>
+        </div>
+      </div>
+      <div class="value-item" data-tilt>
+        <div class="value-num">05</div>
+        <div class="value-content">
+          <h3>Evangelism & Missions</h3>
+          <p>We carry a global mandate to preach the Gospel to every nation, every tribe, and every person — because every soul matters to God.</p>
+        </div>
+      </div>
+      <div class="value-item" data-tilt>
+        <div class="value-num">06</div>
+        <div class="value-content">
+          <h3>Generosity & Giving</h3>
+          <p>We believe in a culture of generosity — giving freely of our time, talent, and treasure to advance God's Kingdom and serve one another.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section reveal" style="text-align:center;">
+  <div class="particles"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="cta-cross">✝</div>
+    <div class="section-label" style="justify-content:center;">You Belong Here</div>
+    <h2 class="section-title" style="max-width:600px;margin:0 auto 24px;">Be Part of the <em>Zion Family</em></h2>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="form.html" class="btn btn-gold"><i class="fas fa-church"></i> Join Membership</a>
+      <a href="prayer-request.html" class="btn btn-outline"><i class="fas fa-pray"></i> Submit Prayer</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Zion International<br>Pentecostal Church</h3>
+      <p>A Spirit-filled community committed to worship, discipleship, and the transformation of lives through the Gospel of Jesus Christ.</p>
+      <div class="socials">
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="http://www.youtube.com/@ZIPC-CHURCH" class="social-link" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+        <a href="https://wa.me/256765075117" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about-us.html">About Us</a></li>
+        <li><a href="zion-gallery.html">Gallery</a></li>
+        <li><a href="prayer-request.html">Prayer Request</a></li>
+        <li><a href="form.html">Join Membership</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Service Times</h4>
+      <ul>
+        <li><a href="#">Sunday — 8:00 &amp; 10:30 AM</a></li>
+        <li><a href="#">Wednesday — 6:30 PM</a></li>
+        <li><a href="#">Friday Night — 7:00 PM</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <a href="https://wa.me/13658331162" class="footer-contact-item" target="_blank"><i class="fab fa-whatsapp"></i> +1 (365) 833-1162</a>
+      <a href="https://wa.me/256765075117" class="footer-contact-item" target="_blank"><i class="fab fa-whatsapp"></i> +256 765 075 117</a>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">📍 Makindye West, Kampala, Uganda</p>
+      <div class="map-box" id="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.41484051279622!2d32.592206858417335!3d0.28977459052733273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sug!4v1777716367786!5m2!1sen!2sug" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Zion International Pentecostal Church. All rights reserved.</p>
+    <p style="font-size:11px;color:var(--muted);">Makindye West, Kampala, Uganda ✝ <em>Transforming Lives by God's Power</em></p>
+  </div>
+</footer>
+
+<a href="https://wa.me/256765075117" class="fab-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="#" class="fab-give" onclick="openGiving(); return false;"><i class="fas fa-heart"></i><span>GIVE</span></a>
+
+<div class="modal-overlay" id="givingModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeGiving()"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">Support the Kingdom</h2>
+    <p class="modal-verse">"Each of you should give what you have decided in your heart to give..." — <strong>2 Corinthians 9:7</strong></p>
+    <div class="giving-grid">
+      <div class="giving-card"><h3><i class="fas fa-mobile-alt"></i> Mobile Giving</h3><div class="give-item"><strong>MTN Mobile Money</strong><p>+256 785 923 209</p><span>Zion International Pentecostal Church</span></div><div class="give-item"><strong>Airtel Money</strong><p>+256 785 923 209</p><span>Zion International Pentecostal Church</span></div></div>
+      <div class="giving-card"><h3><i class="fas fa-university"></i> Bank Transfer</h3><div class="give-item"><strong>Stanbic Bank</strong><p>Account: 00123456789</p><span>Zion International Pentecostal Church</span></div><div class="give-item"><strong>Centenary Bank</strong><p>Account: 00987654321</p><span>Zion International Pentecostal Church</span></div></div>
+    </div>
+    <div class="giving-footer"><p>"Give, and it will be given to you..." — Luke 6:38</p></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  document.getElementById('pageHeroBg').classList.add('loaded');
+</script>
+</body>
+</html>

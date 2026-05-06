@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gallery — Zion International Pentecostal Church</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Josefin+Sans:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+/* PAGE HERO */
+.page-hero {
+  min-height: 55vh;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 80px;
+  overflow: hidden;
+}
+
+.page-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 8s ease;
+  transform: scale(1.05);
+}
+
+.page-hero-bg.loaded { transform: scale(1); }
+
+.page-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,12,20,0.5), rgba(8,12,20,0.88));
+}
+
+.page-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 80px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.05;
+}
+
+.page-title em { color: var(--gold); font-style: italic; }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.breadcrumb a { color: var(--gold); }
+
+/* FILTER TABS */
+.gallery-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 50px 80px 0;
+  background: var(--dark);
+}
+
+.filter-btn {
+  padding: 10px 26px;
+  border-radius: 2px;
+  border: 1px solid rgba(201,168,76,0.2);
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.35s var(--ease-smooth);
+}
+
+.filter-btn:hover, .filter-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--deep);
+}
+
+/* GALLERY GRID — Masonry-style */
+.gallery-section {
+  background: var(--dark);
+  padding: 40px 80px 100px;
+}
+
+.gallery-grid {
+  columns: 4;
+  column-gap: 16px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  display: block;
+  transition: transform 0.4s var(--ease-smooth), opacity 0.4s;
+}
+
+.gallery-item:hover { transform: scale(1.02); z-index: 2; }
+
+.gallery-item img {
+  width: 100%;
+  display: block;
+  transition: transform 0.6s var(--ease-smooth), filter 0.4s;
+  filter: brightness(0.85) saturate(0.9);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+  filter: brightness(1) saturate(1.1);
+}
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,12,20,0.85), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-item-cat {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.gallery-item-zoom {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  background: rgba(201,168,76,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 16px;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: all 0.4s var(--ease-bounce);
+}
+
+.gallery-item:hover .gallery-item-zoom {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Filter animation */
+.gallery-item.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+}
+
+/* LIGHTBOX */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(20px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.lightbox.open { display: flex; }
+
+.lightbox-inner {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+  animation: lbIn 0.4s var(--ease-out);
+}
+
+@keyframes lbIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.lightbox-inner img {
+  max-height: 85vh;
+  max-width: 85vw;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+}
+
+.lb-close {
+  position: fixed;
+  top: 24px; right: 30px;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.4);
+  background: rgba(8,12,20,0.6);
+  color: var(--gold);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.lb-close:hover { background: var(--gold); color: var(--deep); }
+
+.lb-nav {
+  position: fixed;
+  top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.4);
+  background: rgba(8,12,20,0.6);
+  color: var(--gold);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.lb-prev { left: 20px; }
+.lb-next { right: 20px; }
+.lb-nav:hover { background: var(--gold); color: var(--deep); transform: translateY(-50%) scale(1.05); }
+
+.lb-counter {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1200px) { .gallery-grid { columns: 3; } }
+@media (max-width: 900px)  { .gallery-grid { columns: 2; } .gallery-filters, .gallery-section { padding-left: 24px; padding-right: 24px; } }
+@media (max-width: 500px)  { .gallery-grid { columns: 1; } .page-hero-content { padding: 0 24px; } }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-cross"></div>
+  <span class="loader-text">Loading Gallery</span>
+</div>
+
+<div class="cursor cursor-dot"></div>
+<div class="cursor cursor-ring"></div>
+<div class="page-transition"></div>
+<div class="progress-bar"></div>
+
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-img-wrap"><img src="zipc1.jpeg" alt="ZIPC"/></div>
+    <div class="logo-text">
+      <span class="logo-name">ZIPC</span>
+      <span class="logo-tagline">Zion International Pentecostal Church</span>
+    </div>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about-us.html">About</a>
+    <a href="zion-gallery.html" class="active">Gallery</a>
+    <a href="prayer-request.html">Prayer</a>
+    <a href="form.html" class="nav-cta">Join Us</a>
+  </nav>
+  <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button onclick="closeMenu()" style="position:absolute;top:30px;right:30px;background:none;border:none;color:var(--gold);font-size:24px;cursor:pointer;"><i class="fas fa-times"></i></button>
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="about-us.html" onclick="closeMenu()">About</a>
+  <a href="zion-gallery.html" onclick="closeMenu()">Gallery</a>
+  <a href="prayer-request.html" onclick="closeMenu()">Prayer</a>
+  <a href="form.html" onclick="closeMenu()">Join Us</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('zipc19.jpg');" id="pageHeroBg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="particles"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span class="sep">—</span><span>Gallery</span>
+    </div>
+    <h1 class="page-title">Moments of <em>Grace</em></h1>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="gallery-filters">
+  <button class="filter-btn active" data-filter="all">All Photos</button>
+  <button class="filter-btn" data-filter="worship">Worship</button>
+  <button class="filter-btn" data-filter="youth">Youth</button>
+  <button class="filter-btn" data-filter="women">Women</button>
+  <button class="filter-btn" data-filter="men">Men</button>
+  <button class="filter-btn" data-filter="children">Children</button>
+  <button class="filter-btn" data-filter="events">Events</button>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-grid" id="galleryGrid">
+
+    <div class="gallery-item" data-cat="worship" onclick="openLightbox(0)">
+      <img src="zipc1.jpeg" alt="Worship"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Worship</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(1)">
+      <img src="zipc2.jpg" alt="Church Service"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="worship" onclick="openLightbox(2)">
+      <img src="zipc3.jpg" alt="Congregation"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Worship</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(3)">
+      <img src="zipc4.jpg" alt="Service"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="worship" onclick="openLightbox(4)">
+      <img src="zipc5.jpg" alt="Praise"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Worship</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="women" onclick="openLightbox(5)">
+      <img src="zipc6.jpg" alt="Women Ministry"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Women</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(6)">
+      <img src="zipc7.jpg" alt="Prayer"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(7)">
+      <img src="zipc8.jpg" alt="Men Ministry"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(8)">
+      <img src="zipc9.jpg" alt="Church History"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(9)">
+      <img src="zipc10.jpg" alt="Men"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(10)">
+      <img src="zipc11.jpg" alt="Sunday Service"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(11)">
+      <img src="zipc12.jpg" alt="Men Ministry"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="worship" onclick="openLightbox(12)">
+      <img src="zipc13.jpg" alt="Prayer Night"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Worship</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(13)">
+      <img src="zipc14.jpg" alt="Leadership"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="worship" onclick="openLightbox(14)">
+      <img src="zipc15.jpg" alt="Worship"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Worship</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="youth" onclick="openLightbox(15)">
+      <img src="zipc16.jpg" alt="Youth"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Youth</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(16)">
+      <img src="zipc17.jpg" alt="Congregation"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(17)">
+      <img src="zipc18.jpg" alt="Men"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="worship" onclick="openLightbox(18)">
+      <img src="zipc19.jpg" alt="Worship"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Worship</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="youth" onclick="openLightbox(19)">
+      <img src="zipc24.jpg" alt="Youth Ministry"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Youth</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="women" onclick="openLightbox(20)">
+      <img src="zipc40.jpg" alt="Women"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Women</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="women" onclick="openLightbox(21)">
+      <img src="zipc41.jpg" alt="Women Ministry"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Women</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="women" onclick="openLightbox(22)">
+      <img src="zipc42.jpg" alt="Women"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Women</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="youth" onclick="openLightbox(23)">
+      <img src="zipc44.jpg" alt="Youth"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Youth</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(24)">
+      <img src="zipc45.jpg" alt="Men"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="women" onclick="openLightbox(25)">
+      <img src="zipc46.jpg" alt="Women"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Women</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(26)">
+      <img src="zipc47.jpg" alt="Men"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="men" onclick="openLightbox(27)">
+      <img src="zipc48.jpg" alt="Men"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Men</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="children" onclick="openLightbox(28)">
+      <img src="zipc68.jpg" alt="Children"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Children</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="children" onclick="openLightbox(29)">
+      <img src="zipc70.jpg" alt="Children Ministry"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Children</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="women" onclick="openLightbox(30)">
+      <img src="zipc80.jpg" alt="Women"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Women</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" data-cat="events" onclick="openLightbox(31)">
+      <img src="zipc89.jpg" alt="Church Event"/><div class="gallery-item-overlay"><span class="gallery-item-cat">Events</span></div><div class="gallery-item-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="Gallery"/>
+  </div>
+  <button class="lb-nav lb-next" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Zion International<br>Pentecostal Church</h3>
+      <p>A Spirit-filled community committed to worship, discipleship, and the transformation of lives through the Gospel of Jesus Christ.</p>
+      <div class="socials">
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="http://www.youtube.com/@ZIPC-CHURCH" class="social-link" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+        <a href="https://wa.me/256765075117" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about-us.html">About Us</a></li><li><a href="zion-gallery.html">Gallery</a></li><li><a href="prayer-request.html">Prayer Request</a></li><li><a href="form.html">Join Membership</a></li></ul></div>
+    <div class="footer-col"><h4>Service Times</h4><ul><li><a href="#">Sunday — 8:00 &amp; 10:30 AM</a></li><li><a href="#">Wednesday — 6:30 PM</a></li><li><a href="#">Friday Night — 7:00 PM</a></li></ul></div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <a href="https://wa.me/13658331162" class="footer-contact-item" target="_blank"><i class="fab fa-whatsapp"></i> +1 (365) 833-1162</a>
+      <a href="https://wa.me/256765075117" class="footer-contact-item" target="_blank"><i class="fab fa-whatsapp"></i> +256 765 075 117</a>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">📍 Makindye West, Kampala, Uganda</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Zion International Pentecostal Church. All rights reserved.</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/256765075117" class="fab-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="#" class="fab-give" onclick="openGiving(); return false;"><i class="fas fa-heart"></i><span>GIVE</span></a>
+
+<div class="modal-overlay" id="givingModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeGiving()"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">Support the Kingdom</h2>
+    <p class="modal-verse">"Each of you should give what you have decided in your heart to give..." — <strong>2 Corinthians 9:7</strong></p>
+    <div class="giving-grid">
+      <div class="giving-card"><h3><i class="fas fa-mobile-alt"></i> Mobile Giving</h3><div class="give-item"><strong>MTN Mobile Money</strong><p>+256 785 923 209</p><span>Zion International Pentecostal Church</span></div></div>
+      <div class="giving-card"><h3><i class="fas fa-university"></i> Bank Transfer</h3><div class="give-item"><strong>Stanbic Bank</strong><p>Account: 00123456789</p><span>Zion International Pentecostal Church</span></div></div>
+    </div>
+    <div class="giving-footer"><p>"Give, and it will be given to you..." — Luke 6:38</p></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  document.getElementById('pageHeroBg').classList.add('loaded');
+
+  // GALLERY FILTER
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      galleryItems.forEach(item => {
+        if (filter === 'all' || item.dataset.cat === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // LIGHTBOX
+  const imgs = Array.from(document.querySelectorAll('.gallery-item img'));
+  let current = 0;
+
+  function openLightbox(idx) {
+    current = idx;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function lbNav(dir) {
+    current = (current + dir + imgs.length) % imgs.length;
+    updateLightbox();
+  }
+
+  function updateLightbox() {
+    document.getElementById('lightboxImg').src = imgs[current].src;
+    document.getElementById('lbCounter').textContent = `${current + 1} / ${imgs.length}`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+  });
+
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  });
+</script>
+</body>
+</html>
