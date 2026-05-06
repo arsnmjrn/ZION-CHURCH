@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Request - Zion International Pentecostal Church</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+<style>
+  html,body{
+overflow-x:hidden;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+:root{
+--blue:#2563eb;
+--purple:#7c3aed;
+--orange:#f97316;
+--pink:#ec4899;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#dbeafe,#fce7f3,#dcfce7,#fff7ed);
+overflow-x:hidden;
+color:#111;
+}
+
+/* HEADER */
+.header{
+background:linear-gradient(135deg,#2563eb,#7c3aed,#ec4899);
+color:#fff;
+padding:50px 20px;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.header h2{
+font-family:'Playfair Display',serif;
+font-size:42px;
+}
+
+.header p{
+margin-top:10px;
+font-size:18px;
+opacity:.95;
+}
+
+/* FORM CONTAINER */
+.container{
+max-width:800px;
+margin:60px auto;
+background:rgba(255,255,255,.92);
+backdrop-filter:blur(18px);
+padding:45px;
+border-radius:24px;
+box-shadow:0 25px 60px rgba(124,58,237,.15);
+transition:.4s;
+}
+
+.container:hover{
+transform:translateY(-8px);
+}
+
+/* DISCLAIMER */
+.disclaimer{
+background:#fff8e1;
+padding:18px;
+border-left:6px solid var(--orange);
+margin-bottom:25px;
+border-radius:12px;
+}
+
+/* FORM */
+form input,
+form select,
+form textarea{
+width:100%;
+padding:16px;
+margin:12px 0;
+border-radius:14px;
+border:2px solid transparent;
+font-size:15px;
+transition:.35s;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus{
+border-color:var(--purple);
+outline:none;
+box-shadow:0 0 0 5px rgba(124,58,237,.12);
+}
+
+button{
+width:100%;
+background:linear-gradient(135deg,var(--blue),var(--purple),var(--pink));
+color:#fff;
+border:none;
+padding:16px;
+border-radius:14px;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+transition:.35s;
+box-shadow:0 15px 35px rgba(124,58,237,.25);
+}
+
+button:hover{
+transform:translateY(-5px);
+}
+
+/* SUCCESS MODAL */
+.success-modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.75);
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.success-box{
+background:#fff;
+padding:35px;
+border-radius:18px;
+text-align:center;
+max-width:420px;
+}
+
+.success-box h2{
+color:var(--purple);
+margin-bottom:15px;
+}
+
+/* FOOTER */
+footer{
+background:#0b1020;
+color:#fff;
+padding:80px 60px 20px;
+margin-top:80px;
+}
+
+.footer-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:30px;
+margin-bottom:40px;
+}
+
+.socials{
+display:flex;
+gap:12px;
+margin-top:10px;
+}
+
+.socials a{
+width:42px;
+height:42px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(255,255,255,0.1);
+transition:.3s;
+}
+
+.socials a:hover{
+background:var(--orange);
+transform:translateY(-8px) rotate(10deg) scale(1.15);
+}
+
+.footer-bottom{
+text-align:center;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+color:#aaa;
+}
+
+.map-box{
+margin-top:18px;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+transition:.4s;
+}
+
+.map-box iframe{
+width:100%;
+height:220px;
+border:none;
+}
+
+.map-box:hover{
+transform:translateY(-8px) scale(1.02);
+}
+
+/* WHATSAPP */
+.whatsapp{
+position:fixed;
+right:20px;
+bottom:20px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#25d366;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
+color:#fff;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}
+70%{box-shadow:0 0 0 25px transparent;}
+}
+
+@media(max-width:768px){
+.container{
+margin:30px 15px;
+padding:25px;
+}
+
+.header h2{
+font-size:30px;
+}
+
+footer{
+padding:60px 25px 20px;
+}
+}
+
+
+
+
+
+
+.give-float{
+position:fixed;
+bottom:95px;
+right:20px;
+width:65px;
+height:65px;
+background:linear-gradient(135deg,#dc2626,#ef4444);
+color:white;
+border-radius:50%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+font-size:14px;
+font-weight:700;
+box-shadow:0 0 18px rgba(239,68,68,.6);
+animation:heartPulse 1.5s infinite;
+z-index:999;
+transition:.3s;
+}
+
+.give-float i{
+font-size:18px;
+margin-bottom:2px;
+}
+
+.give-float:hover{
+transform:translateY(-8px) scale(1.08);
+box-shadow:0 15px 30px rgba(239,68,68,.45);
+}
+
+@keyframes heartPulse{
+0%{
+box-shadow:0 0 0 0 rgba(239,68,68,.7);
+}
+70%{
+box-shadow:0 0 0 15px rgba(239,68,68,0);
+}
+100%{
+box-shadow:0 0 0 0 rgba(239,68,68,0);
+}
+}
+
+
+
+
+
+
+.giving-modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+backdrop-filter:blur(10px);
+overflow-y:auto;
+padding:25px 0;
+}
+
+.giving-box{
+width:90%;
+max-width:1000px;
+max-height:90vh;
+overflow-y:auto;
+background:linear-gradient(135deg,#ffffff,#fdf4ff,#eff6ff);
+border-radius:28px;
+padding:40px;
+position:relative;
+box-shadow:0 30px 80px rgba(0,0,0,.25);
+animation:popupFade .5s ease;
+}
+
+@keyframes popupFade{
+from{
+opacity:0;
+transform:translateY(40px) scale(.9);
+}
+to{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+}
+
+.giving-close{
+position:absolute;
+top:20px;
+right:20px;
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+font-size:18px;
+}
+
+.giving-box h2{
+text-align:center;
+font-size:38px;
+font-family:'Playfair Display';
+background:linear-gradient(90deg,#2563eb,#7c3aed,#ec4899);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.giving-sub{
+text-align:center;
+margin:18px 0 35px;
+color:#555;
+}
+
+.giving-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+}
+
+.giving-card{
+background:#fff;
+padding:28px;
+border-radius:22px;
+box-shadow:0 15px 35px rgba(124,58,237,.12);
+transition:.35s;
+}
+
+.giving-card:hover{
+transform:translateY(-8px);
+}
+
+.giving-card h3{
+margin-bottom:20px;
+color:#7c3aed;
+}
+
+.give-item{
+padding:18px;
+margin-bottom:15px;
+border-radius:16px;
+background:linear-gradient(135deg,#f8fafc,#eef2ff);
+}
+
+.give-item strong{
+display:block;
+margin-bottom:8px;
+font-size:16px;
+}
+
+.give-item p{
+font-weight:700;
+color:#2563eb;
+margin-bottom:6px;
+}
+
+.give-item span{
+font-size:14px;
+color:#555;
+}
+
+.giving-footer{
+margin-top:30px;
+text-align:center;
+padding-top:20px;
+border-top:1px solid rgba(0,0,0,.08);
+}
+
+.giving-footer p{
+font-style:italic;
+margin-bottom:8px;
+color:#7c3aed;
+}
+
+.giving-footer span{
+color:#777;
+}
+
+@media(max-width:768px){
+.giving-grid{
+grid-template-columns:1fr;
+}
+
+.giving-box{
+padding:25px;
+}
+
+.giving-box h2{
+font-size:28px;
+}
+}
+
+
+.giving-box::-webkit-scrollbar{
+width:8px;
+}
+
+.giving-box::-webkit-scrollbar-thumb{
+background:linear-gradient(#2563eb,#7c3aed,#ec4899);
+border-radius:20px;
+}
+
+.giving-box::-webkit-scrollbar-track{
+background:#f3f4f6;
+}
+
+
+
+
+
+.zion-contacts ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.zion-contacts li{
+    margin:14px 0;
+}
+
+.zion-contacts a{
+    text-decoration:none;
+    color:white;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 18px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    transition:all 0.4s ease;
+    backdrop-filter:blur(6px);
+}
+
+.zion-contacts a:hover{
+    background:#25D366;
+    transform:translateX(8px);
+    box-shadow:0 8px 20px rgba(37,211,102,0.35);
+}
+
+.zion-contacts i{
+    font-size:22px;
+    color:#25D366;
+}
+
+.zion-contacts a:hover i{
+    color:white;
+}
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h2>Zion International Pentecostal Church</h2>
+<p>Prayer Request Portal</p>
+</div>
+
+<div class="container">
+
+<h2>Submit Your Prayer Request</h2>
+
+<p class="disclaimer">
+<strong>Your request is private.</strong><br>
+Only the church prayer team will receive your prayer request directly and pray with confidentiality.
+</p>
+
+<form id="prayerForm">
+
+<input type="text" id="fullname" placeholder="Full Names" required>
+
+<input type="text" id="contact" placeholder="Email or Phone Number" required>
+
+<select id="gender" required>
+<option value="">Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+</select>
+
+<input type="text" id="location" placeholder="Address / Country" required>
+
+<textarea id="message" rows="6" placeholder="Write your prayer request..." required></textarea>
+
+<label>Attach File (optional)</label>
+<input type="file" id="file">
+
+<button type="submit">Submit Prayer Request</button>
+
+</form>
+</div>
+
+<!-- SUCCESS POPUP -->
+<div class="success-modal" id="successModal">
+<div class="success-box">
+<h2>God Loves You ❤️</h2>
+<p>Your prayer has been received successfully.</p>
+<button onclick="closeSuccess()">Close</button>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-grid">
+
+<div>
+<h3>Location</h3>
+<p>Kampala Uganda, Makindye West</p>
+
+<div class="map-box" id="map">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.41484051279622!2d32.592206858417335!3d0.28977459052733273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sug!4v1777716367786!5m2!1sen!2sug"
+        width="100%"
+        height="250"
+
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
+<div>
+<h3>Contact</h3>
+<!-----add an imogi for phone-->
+<div class="zion-contacts">
+  <ul>
+    <li>
+      <a href="https://wa.me/13658331162" target="_blank">
+        <i class="fab fa-whatsapp"></i> +1 (365) 833-1162
+      </a>
+    </li>
+
+    <li>
+      <a href="https://wa.me/256765075117" target="_blank">
+        <i class="fab fa-whatsapp"></i> +256 7650 75117
+      </a>
+    </li>
+
+    <li>
+      <a href="https://wa.me/256778758047" target="_blank">
+        <i class="fab fa-whatsapp"></i> +256 7787 58047
+      </a>
+    </li>
+
+    <li>
+      <a href="https://wa.me/256766006871" target="_blank">
+        <i class="fab fa-whatsapp"></i> +256 7660 06871
+      </a>
+    </li>
+  </ul>
+</div>
+<p>zionchurch@gmail.com</p>
+</div>
+
+<div>
+<h3>Follow Us</h3>
+<div class="socials">
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="http://www.youtube.com/@ZIPC-CHURCH"><i class="fab fa-youtube"></i></a>
+ <a href="#"><i class="fab fa-tiktok"></i></a>
+ <a href="#"><i class="fab fa-x-twitter"></i></a>
+<a href="#"><i class="fab fa-whatsapp"></i></a>
+<a href="#"><i class="fas fa-envelope"></i></a>
+</div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="footer-bottom">
+© 2026 Zion International Pentecostal Church
+</div>
+</footer>
+
+
+
+
+
+
+
+ <a href="#" class="give-float" onclick="openGiving(); closeMenu();">
+<i class="fas fa-heart"></i>
+<span>GIVE</span>
+</a>
+
+<a class="whatsapp" href="https://wa.me/256785923209">
+<i class="fab fa-whatsapp"></i>
+</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- GIVING POPUP -->
+<div class="giving-modal" id="givingModal">
+
+<div class="giving-box">
+
+<div class="giving-close" onclick="closeGiving()">
+<i class="fas fa-times"></i>
+</div>
+
+<h2>Support The Work of God</h2>
+<p class="giving-sub">
+“Each of you should give what you have decided in your heart to give...”  
+<br><strong>2 Corinthians 9:7</strong>
+</p>
+
+<div class="giving-grid">
+
+<!-- MOBILE MONEY -->
+<div class="giving-card">
+<h3><i class="fas fa-mobile-alt"></i> Mobile Giving</h3>
+
+<div class="give-item">
+<strong>MTN Mobile Money</strong>
+<p>+256 785 923 209</p>
+<span>Name: Zion International Pentecostal Church</span>
+</div>
+
+<div class="give-item">
+<strong>Airtel Money</strong>
+<p>+256 785 923 209</p>
+<span>Name: Zion International Pentecostal Church</span>
+</div>
+</div>
+
+<!-- BANK -->
+<div class="giving-card">
+<h3><i class="fas fa-university"></i> Bank Transfer</h3>
+
+<div class="give-item">
+<strong>Stanbic Bank</strong>
+<p>Account: 00123456789</p>
+<span>Name: Zion International Pentecostal Church</span>
+</div>
+
+<div class="give-item">
+<strong>Centenary Bank</strong>
+<p>Account: 00987654321</p>
+<span>Name: Zion International Pentecostal Church</span>
+</div>
+</div>
+
+</div>
+
+<div class="giving-footer">
+<p>
+“Give, and it will be given to you...” – Luke 6:38
+</p>
+<span>@ Zion International Pentecostal Church 2026</span>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+document.getElementById("prayerForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+let name=document.getElementById("fullname").value;
+let contact=document.getElementById("contact").value;
+let gender=document.getElementById("gender").value;
+let location=document.getElementById("location").value;
+let message=document.getElementById("message").value;
+
+let fullMessage=`
+Name: ${name}
+Contact: ${contact}
+Gender: ${gender} 
+Location: ${location}
+
+Prayer Request:
+${message}
+`;
+
+window.open(`https://wa.me/13658331162?text=${encodeURIComponent(fullMessage)}`);
+
+document.getElementById("successModal").style.display="flex";
+
+document.getElementById("prayerForm").reset();
+});
+
+function closeSuccess(){
+document.getElementById("successModal").style.display="none";
+}
+
+
+
+function openGiving(){
+document.getElementById('givingModal').style.display='flex';
+}
+
+function closeGiving(){
+document.getElementById('givingModal').style.display='none';
+}
+
+
+function openGivingPopup(){
+document.getElementById("givingPopup").style.display="flex";
+}
+
+
+
+
+</script>
+
+</body>
+</html>
