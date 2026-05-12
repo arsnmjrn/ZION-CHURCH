@@ -700,8 +700,27 @@
 </div>
 
 <script src="script.js"></script>
+
 <script>
-  document.getElementById('pageHeroBg').classList.add('loaded');
+window.addEventListener('load', function () {
+    const loader = document.getElementById('loader');
+    const heroBg = document.getElementById('pageHeroBg');
+
+    if (heroBg) {
+        heroBg.classList.add('loaded');
+    }
+
+    if (loader) {
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 800);
+    }
+});
 </script>
+
+</body>
 </body>
 </html>

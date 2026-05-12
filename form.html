@@ -5,9 +5,19 @@
 <title>Contact & Visit — Mission Church Africa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+
+<!-- ══════════════════════════════════════════
+     EmailJS SDK  — replace YOUR_PUBLIC_KEY
+     Sign up free at https://www.emailjs.com
+     Service ID:  YOUR_SERVICE_ID
+     Visit Template ID:   template_visit
+     Join Template ID:    template_join
+     General Template ID: template_general
+══════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <link rel="stylesheet" href="shared.css"/>
 <style>
-
 /* ═══════════════════════════════════════
    PAGE HERO
 ═══════════════════════════════════════ */
@@ -143,6 +153,7 @@
   background: var(--warm-white);
   outline: none;
   transition: var(--transition);
+  box-sizing: border-box;
 }
 .field-group input:focus,
 .field-group select:focus,
@@ -184,6 +195,20 @@
   margin-top: 8px;
 }
 .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(184,134,11,.4); }
+.submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* Sending spinner inside button */
+.btn-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* Form success */
 .form-success {
@@ -197,101 +222,60 @@
 .form-success h3 { font-size: 1.6rem; color: var(--gold-dark); margin-bottom: 10px; }
 .form-success p { color: var(--text-dim); }
 
+/* Form error toast */
+.form-error-toast {
+  display: none;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-left: 4px solid #DC2626;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: .83rem;
+  color: #7F1D1D;
+  animation: fadeIn .3s ease;
+}
+
 /* ═══════════════════════════════════════
    HEART MAP SECTION
 ═══════════════════════════════════════ */
 .map-section { background: var(--ivory); }
-
-.heart-map-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto 60px;
-}
-
-/* SVG clip path heart */
-.heart-clip-svg {
-  position: absolute;
-  width: 0; height: 0;
-  overflow: hidden;
-}
-
+.heart-clip-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
 .heart-frame {
   position: relative;
   width: 100%;
-  padding-bottom: 90%;   /* roughly heart proportions */
+  padding-bottom: 90%;
 }
-
-/* The actual iframe sits inside; clipped by clip-path */
 .heart-frame iframe {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
-  /* CSS heart clip-path */
   clip-path: url(#heartClip);
   -webkit-clip-path: url(#heartClip);
 }
-
-/* Decorative outline/glow ring around the heart */
+.heart-map-wrap { position: relative; width: 100%; max-width: 700px; margin: 0 auto 60px; }
 .heart-outline {
-  position: absolute;
-  inset: -6px;
-  background: transparent;
+  position: absolute; inset: -6px;
   clip-path: url(#heartClipOuter);
   -webkit-clip-path: url(#heartClipOuter);
   background: linear-gradient(135deg, var(--gold-dark), var(--gold2), var(--gold-light), var(--gold));
   animation: heartGlow 3s ease-in-out infinite;
   z-index: -1;
-  border-radius: 4px;
 }
-@keyframes heartGlow {
-  0%, 100% { opacity: .7; filter: blur(4px); }
-  50%       { opacity: 1;  filter: blur(2px); }
-}
-
-/* Floating hearts decoration */
-.floating-hearts {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.fheart {
-  position: absolute;
-  font-size: 1.2rem;
-  opacity: 0;
-  animation: floatHeart 4s ease-in-out infinite;
-}
+@keyframes heartGlow { 0%, 100% { opacity: .7; filter: blur(4px); } 50% { opacity: 1; filter: blur(2px); } }
+.floating-hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.fheart { position: absolute; font-size: 1.2rem; opacity: 0; animation: floatHeart 4s ease-in-out infinite; }
 .fheart:nth-child(1) { left: 10%; bottom: 0; animation-delay: 0s; }
 .fheart:nth-child(2) { left: 30%; bottom: 0; animation-delay: .8s; font-size: .8rem; }
 .fheart:nth-child(3) { left: 55%; bottom: 0; animation-delay: 1.6s; font-size: 1rem; }
 .fheart:nth-child(4) { left: 75%; bottom: 0; animation-delay: 2.4s; font-size: .7rem; }
 .fheart:nth-child(5) { left: 90%; bottom: 0; animation-delay: 3.2s; }
-@keyframes floatHeart {
-  0%   { opacity: 0; transform: translateY(0) scale(.8); }
-  20%  { opacity: .7; }
-  100% { opacity: 0; transform: translateY(-200px) scale(1.2); }
-}
+@keyframes floatHeart { 0% { opacity: 0; transform: translateY(0) scale(.8); } 20% { opacity: .7; } 100% { opacity: 0; transform: translateY(-200px) scale(1.2); } }
 
-/* Address card below map */
-.map-address-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 700px;
-  margin: 0 auto;
-}
-.addr-card {
-  background: white;
-  border: 1px solid var(--rim);
-  border-radius: 8px;
-  padding: 22px 18px;
-  text-align: center;
-  transition: var(--transition);
-  box-shadow: 0 4px 16px rgba(26,18,8,.05);
-}
+.map-address-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 700px; margin: 0 auto; }
+.addr-card { background: white; border: 1px solid var(--rim); border-radius: 8px; padding: 22px 18px; text-align: center; transition: var(--transition); box-shadow: 0 4px 16px rgba(26,18,8,.05); }
 .addr-card:hover { transform: translateY(-5px); box-shadow: var(--glow); border-color: var(--rim2); }
 .addr-card-icon { font-size: 1.8rem; margin-bottom: 10px; }
 .addr-card h4 { font-size: .88rem; color: var(--gold-dark); margin-bottom: 6px; font-family: var(--font-body); font-weight: 700; }
@@ -304,74 +288,68 @@
   background: linear-gradient(135deg, var(--deep2) 0%, #2C1F0A 50%, var(--deep2) 100%);
   position: relative; overflow: hidden;
 }
-.prayer-section::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: url('mission (5).jpg') center/cover;
-  opacity: .08;
-}
+.prayer-section::before { content: ''; position: absolute; inset: 0; background: url('mission (5).jpg') center/cover; opacity: .08; }
 .prayer-section .container { position: relative; z-index: 2; }
-.prayer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
+.prayer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 .prayer-left h2 { color: white; margin-bottom: 20px; }
 .prayer-left p { color: rgba(255,255,255,.6); margin-bottom: 32px; }
-.prayer-verse {
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-  border-left: 3px solid var(--gold2);
-  border-radius: 6px;
-  padding: 22px 24px;
-  font-style: italic;
-  color: rgba(255,255,255,.7);
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  line-height: 1.7;
-}
+.prayer-verse { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-left: 3px solid var(--gold2); border-radius: 6px; padding: 22px 24px; font-style: italic; color: rgba(255,255,255,.7); font-family: var(--font-display); font-size: 1.1rem; line-height: 1.7; }
 .prayer-verse cite { display: block; margin-top: 10px; font-size: .75rem; font-style: normal; letter-spacing: .15em; color: var(--gold2); font-family: var(--font-body); }
 
-.prayer-form-box {
-  background: white;
-  border-radius: 10px;
-  padding: 42px 38px;
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  overflow: hidden;
+.prayer-form-box { background: white; border-radius: 10px; padding: 42px 38px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+.prayer-form-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold-dark), var(--gold2)); }
+
+/* WhatsApp prayer submit button */
+.wa-submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #075E54, #25D366);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 8px 28px rgba(37,211,102,.3);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
 }
-.prayer-form-box::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--gold-dark), var(--gold2));
+.wa-submit-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(37,211,102,.4); }
+
+/* Prayer WhatsApp notice */
+.prayer-wa-notice {
+  background: rgba(37,211,102,.08);
+  border: 1px solid rgba(37,211,102,.25);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: .78rem;
+  color: #075E54;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* ═══════════════════════════════════════
-   SERVICE TIMES SIDEBAR (on contact page)
+   SERVICE TIMES SIDEBAR
 ═══════════════════════════════════════ */
-.side-service-times {
-  background: var(--ivory);
-  border: 1px solid var(--rim);
-  border-radius: 8px;
-  padding: 32px;
-  margin-top: 28px;
-}
-.side-service-times h4 {
-  font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--gold); font-family: var(--font-body); font-weight: 700;
-  margin-bottom: 20px;
-}
-.sst-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 0; border-bottom: 1px solid var(--rim);
-}
+.side-service-times { background: var(--ivory); border: 1px solid var(--rim); border-radius: 8px; padding: 32px; margin-top: 28px; }
+.side-service-times h4 { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-family: var(--font-body); font-weight: 700; margin-bottom: 20px; }
+.sst-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--rim); }
 .sst-row:last-child { border-bottom: none; }
 .sst-day { font-size: .83rem; font-weight: 600; color: var(--text); }
 .sst-time { font-size: .78rem; color: var(--gold-dark); font-weight: 600; }
 
 /* ═══════════════════════════════════════
-   FLOATING BUTTONS (same as index)
+   FLOATING ORBIT BUTTONS
 ═══════════════════════════════════════ */
 .fab-orbit-wrap { position:fixed; inset:0; z-index:9990; pointer-events:none; }
 .fab-donate, .fab-whatsapp { position:absolute; pointer-events:all; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; text-decoration:none; }
@@ -383,6 +361,25 @@
 .fab-wa-label { font-size:.55rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:#075E54; background:white; padding:2px 6px; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,.12); white-space:nowrap; }
 @keyframes fabPulse { 0%{box-shadow:0 0 0 0 rgba(192,57,43,.6)} 70%{box-shadow:0 0 0 18px rgba(192,57,43,0)} 100%{box-shadow:0 0 0 0 rgba(192,57,43,0)} }
 @keyframes waPulse { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)} 70%{box-shadow:0 0 0 16px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
+
+/* ═══════════════════════════════════════
+   3D SHADOW SYSTEM
+═══════════════════════════════════════ */
+.quick-info { box-shadow: 0 4px 8px rgba(26,18,8,.06), 0 12px 32px rgba(26,18,8,.09), 0 24px 64px rgba(26,18,8,.05) !important; }
+.qi-item:hover { box-shadow: inset 0 -3px 0 var(--gold2), 0 8px 24px rgba(184,134,11,.10) !important; }
+.qi-icon { box-shadow: 0 4px 10px rgba(184,134,11,.30), 0 10px 28px rgba(184,134,11,.20), inset 0 1px 0 rgba(255,255,255,.25) !important; }
+.form-panel { box-shadow: 0 4px 8px rgba(26,18,8,.07), 0 16px 40px rgba(26,18,8,.11), 0 40px 80px rgba(26,18,8,.08) !important; }
+.submit-btn { box-shadow: 0 2px 4px rgba(139,105,20,.20), 0 8px 20px rgba(184,134,11,.30), 0 20px 48px rgba(184,134,11,.15), inset 0 1px 0 rgba(255,255,255,.20) !important; }
+.submit-btn:hover { box-shadow: 0 4px 8px rgba(139,105,20,.25), 0 16px 36px rgba(184,134,11,.40), 0 32px 64px rgba(184,134,11,.20), inset 0 1px 0 rgba(255,255,255,.25) !important; }
+.addr-card { box-shadow: 0 2px 6px rgba(26,18,8,.06), 0 8px 24px rgba(26,18,8,.09), 0 20px 48px rgba(26,18,8,.06) !important; }
+.addr-card:hover { box-shadow: 0 4px 10px rgba(184,134,11,.10), 0 16px 36px rgba(184,134,11,.18), 0 36px 72px rgba(26,18,8,.14) !important; }
+.heart-outline { filter: blur(6px) !important; box-shadow: 0 0 60px rgba(184,134,11,.4), 0 0 120px rgba(184,134,11,.15) !important; }
+.prayer-form-box { box-shadow: 0 4px 8px rgba(26,18,8,.10), 0 20px 48px rgba(26,18,8,.16), 0 48px 96px rgba(26,18,8,.12) !important; }
+.fab-donate-btn { box-shadow: 0 4px 8px rgba(139,26,26,.35), 0 12px 28px rgba(192,57,43,.40), 0 24px 56px rgba(139,26,26,.25), inset 0 1px 0 rgba(255,255,255,.25) !important; }
+.fab-wa-btn { box-shadow: 0 4px 8px rgba(7,94,84,.30), 0 12px 28px rgba(37,211,102,.35), 0 24px 56px rgba(7,94,84,.20), inset 0 1px 0 rgba(255,255,255,.20) !important; }
+.fab-donate-label, .fab-wa-label { box-shadow: 0 2px 8px rgba(26,18,8,.18), 0 6px 18px rgba(26,18,8,.10) !important; }
+.side-service-times { box-shadow: 0 2px 6px rgba(26,18,8,.05), 0 8px 24px rgba(26,18,8,.08), 0 20px 48px rgba(26,18,8,.05) !important; }
+.field-group input:focus, .field-group select:focus, .field-group textarea:focus { box-shadow: 0 0 0 3px rgba(218,165,32,.15), 0 4px 12px rgba(184,134,11,.12), 0 10px 28px rgba(184,134,11,.08) !important; }
 
 /* ═══════════════════════════════════════
    RESPONSIVE
@@ -400,124 +397,6 @@
   .field-row { grid-template-columns: 1fr; }
   .map-address-cards { grid-template-columns: 1fr; }
   .prayer-form-box { padding: 28px 20px; }
-}
-
-/* ═══════════════════════════════════════════
-   GLOBAL 3D SHADOW SYSTEM — CONTACT PAGE
-═══════════════════════════════════════════ */
-
-/* --- Quick info strip --- */
-.quick-info {
-  box-shadow:
-    0 4px 8px rgba(26,18,8,.06),
-    0 12px 32px rgba(26,18,8,.09),
-    0 24px 64px rgba(26,18,8,.05) !important;
-}
-.qi-item:hover {
-  box-shadow: inset 0 -3px 0 var(--gold2), 0 8px 24px rgba(184,134,11,.10) !important;
-}
-.qi-icon {
-  box-shadow:
-    0 4px 10px rgba(184,134,11,.30),
-    0 10px 28px rgba(184,134,11,.20),
-    inset 0 1px 0 rgba(255,255,255,.25) !important;
-}
-
-/* --- Form panel --- */
-.form-panel {
-  box-shadow:
-    0 4px 8px rgba(26,18,8,.07),
-    0 16px 40px rgba(26,18,8,.11),
-    0 40px 80px rgba(26,18,8,.08) !important;
-}
-
-/* --- Buttons --- */
-.submit-btn {
-  box-shadow:
-    0 2px 4px rgba(139,105,20,.20),
-    0 8px 20px rgba(184,134,11,.30),
-    0 20px 48px rgba(184,134,11,.15),
-    inset 0 1px 0 rgba(255,255,255,.20) !important;
-}
-.submit-btn:hover {
-  box-shadow:
-    0 4px 8px rgba(139,105,20,.25),
-    0 16px 36px rgba(184,134,11,.40),
-    0 32px 64px rgba(184,134,11,.20),
-    inset 0 1px 0 rgba(255,255,255,.25) !important;
-}
-
-/* --- Address / campus cards --- */
-.addr-card {
-  box-shadow:
-    0 2px 6px rgba(26,18,8,.06),
-    0 8px 24px rgba(26,18,8,.09),
-    0 20px 48px rgba(26,18,8,.06) !important;
-}
-.addr-card:hover {
-  box-shadow:
-    0 4px 10px rgba(184,134,11,.10),
-    0 16px 36px rgba(184,134,11,.18),
-    0 36px 72px rgba(26,18,8,.14) !important;
-}
-
-/* --- Map heart glow --- */
-.heart-outline {
-  filter: blur(6px) !important;
-  box-shadow: 0 0 60px rgba(184,134,11,.4), 0 0 120px rgba(184,134,11,.15) !important;
-}
-
-/* --- Prayer form box --- */
-.prayer-form-box {
-  box-shadow:
-    0 4px 8px rgba(26,18,8,.10),
-    0 20px 48px rgba(26,18,8,.16),
-    0 48px 96px rgba(26,18,8,.12) !important;
-}
-
-/* --- FABs --- */
-.fab-donate-btn {
-  box-shadow:
-    0 4px 8px rgba(139,26,26,.35),
-    0 12px 28px rgba(192,57,43,.40),
-    0 24px 56px rgba(139,26,26,.25),
-    inset 0 1px 0 rgba(255,255,255,.25) !important;
-}
-.fab-wa-btn {
-  box-shadow:
-    0 4px 8px rgba(7,94,84,.30),
-    0 12px 28px rgba(37,211,102,.35),
-    0 24px 56px rgba(7,94,84,.20),
-    inset 0 1px 0 rgba(255,255,255,.20) !important;
-}
-.fab-donate-label, .fab-wa-label {
-  box-shadow: 0 2px 8px rgba(26,18,8,.18), 0 6px 18px rgba(26,18,8,.10) !important;
-}
-
-/* --- Service times card --- */
-.side-service-times {
-  box-shadow:
-    0 2px 6px rgba(26,18,8,.05),
-    0 8px 24px rgba(26,18,8,.08),
-    0 20px 48px rgba(26,18,8,.05) !important;
-}
-
-/* --- Campus info rows --- */
-div[style*="box-shadow:0 2px 12px"] {
-  box-shadow:
-    0 2px 6px rgba(26,18,8,.06),
-    0 8px 24px rgba(26,18,8,.10),
-    0 20px 48px rgba(26,18,8,.06) !important;
-}
-
-/* --- Inputs focused --- */
-.field-group input:focus,
-.field-group select:focus,
-.field-group textarea:focus {
-  box-shadow:
-    0 0 0 3px rgba(218,165,32,.15),
-    0 4px 12px rgba(184,134,11,.12),
-    0 10px 28px rgba(184,134,11,.08) !important;
 }
 </style>
 </head>
@@ -583,30 +462,34 @@ div[style*="box-shadow:0 2px 12px"] {
     <p class="section-sub anim-up delay-2">Fill in the form and our team will be in touch within 24 hours.</p>
 
     <div class="contact-grid">
-
       <!-- FORM PANEL -->
       <div class="form-panel anim-left">
 
+        <!-- Error toast -->
+        <div class="form-error-toast" id="formErrorToast">
+          ⚠️ <span id="formErrorMsg">Something went wrong. Please try again or WhatsApp us directly.</span>
+        </div>
+
         <!-- Tabs -->
         <div class="form-tabs">
-          <button class="form-tab active" onclick="switchTab('visit')">🗓 Plan a Visit</button>
-          <button class="form-tab" onclick="switchTab('join')">✝️ Join the Church</button>
-          <button class="form-tab" onclick="switchTab('general')">💬 General Enquiry</button>
+          <button class="form-tab active" onclick="switchTab('visit', this)">🗓 Plan a Visit</button>
+          <button class="form-tab" onclick="switchTab('join', this)">✝️ Join the Church</button>
+          <button class="form-tab" onclick="switchTab('general', this)">💬 General Enquiry</button>
         </div>
 
         <!-- VISIT TAB -->
         <div class="form-pane active" id="pane-visit">
           <div class="field-row">
-            <div class="field-group"><label>First Name</label><input type="text" placeholder="e.g. Sarah"/></div>
-            <div class="field-group"><label>Last Name</label><input type="text" placeholder="e.g. Nakato"/></div>
+            <div class="field-group"><label>First Name *</label><input type="text" id="v-first" placeholder="e.g. Sarah"/></div>
+            <div class="field-group"><label>Last Name *</label><input type="text" id="v-last" placeholder="e.g. Nakato"/></div>
           </div>
           <div class="field-row">
-            <div class="field-group"><label>Phone / WhatsApp</label><input type="tel" placeholder="+256 700 000 000"/></div>
-            <div class="field-group"><label>Email Address</label><input type="email" placeholder="you@email.com"/></div>
+            <div class="field-group"><label>Phone / WhatsApp</label><input type="tel" id="v-phone" placeholder="+256 700 000 000"/></div>
+            <div class="field-group"><label>Email Address *</label><input type="email" id="v-email" placeholder="you@email.com"/></div>
           </div>
           <div class="field-group">
             <label>Preferred Sunday Service</label>
-            <select>
+            <select id="v-service">
               <option value="">Select a service time…</option>
               <option>8:00 AM — First Service</option>
               <option>10:00 AM — Second Service</option>
@@ -615,7 +498,7 @@ div[style*="box-shadow:0 2px 12px"] {
           </div>
           <div class="field-group">
             <label>How did you hear about us?</label>
-            <select>
+            <select id="v-source">
               <option value="">Choose one…</option>
               <option>Friend or Family</option>
               <option>Social Media</option>
@@ -627,28 +510,28 @@ div[style*="box-shadow:0 2px 12px"] {
           </div>
           <div class="field-group">
             <label>Anything we should know? (Optional)</label>
-            <textarea placeholder="Dietary needs, mobility requirements, or just a note to say hi…"></textarea>
+            <textarea id="v-notes" placeholder="Dietary needs, mobility requirements, or just a note to say hi…"></textarea>
           </div>
-          <button class="submit-btn" onclick="submitForm(this)">Book My Visit →</button>
+          <button class="submit-btn" id="v-submit-btn" onclick="submitVisit()">Book My Visit →</button>
         </div>
 
         <!-- JOIN TAB -->
         <div class="form-pane" id="pane-join">
           <div class="field-row">
-            <div class="field-group"><label>Full Name</label><input type="text" placeholder="Your full name"/></div>
-            <div class="field-group"><label>Date of Birth</label><input type="date"/></div>
+            <div class="field-group"><label>Full Name *</label><input type="text" id="j-name" placeholder="Your full name"/></div>
+            <div class="field-group"><label>Date of Birth</label><input type="date" id="j-dob"/></div>
           </div>
           <div class="field-row">
-            <div class="field-group"><label>Phone</label><input type="tel" placeholder="+256 700 000 000"/></div>
-            <div class="field-group"><label>Email</label><input type="email" placeholder="you@email.com"/></div>
+            <div class="field-group"><label>Phone *</label><input type="tel" id="j-phone" placeholder="+256 700 000 000"/></div>
+            <div class="field-group"><label>Email *</label><input type="email" id="j-email" placeholder="you@email.com"/></div>
           </div>
           <div class="field-group">
             <label>Residential Area</label>
-            <input type="text" placeholder="e.g. Ntinda, Mukono, Entebbe…"/>
+            <input type="text" id="j-area" placeholder="e.g. Ntinda, Mukono, Entebbe…"/>
           </div>
           <div class="field-group">
             <label>Which campus interests you?</label>
-            <select>
+            <select id="j-campus">
               <option value="">Select campus…</option>
               <option>Main — Kampala Road</option>
               <option>Ntinda Campus</option>
@@ -657,34 +540,34 @@ div[style*="box-shadow:0 2px 12px"] {
             </select>
           </div>
           <div class="field-group">
-            <label>Are you interested in any of these ministries?</label>
+            <label>Ministries you are interested in</label>
             <div class="check-group">
-              <label class="check-item"><input type="checkbox"/> Youth</label>
-              <label class="check-item"><input type="checkbox"/> Women</label>
-              <label class="check-item"><input type="checkbox"/> Men</label>
-              <label class="check-item"><input type="checkbox"/> Children's Church</label>
-              <label class="check-item"><input type="checkbox"/> Worship Team</label>
-              <label class="check-item"><input type="checkbox"/> Ushering</label>
-              <label class="check-item"><input type="checkbox"/> Prayer Team</label>
-              <label class="check-item"><input type="checkbox"/> Media</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Youth"/> Youth</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Women"/> Women</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Men"/> Men</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Children's Church"/> Children's Church</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Worship Team"/> Worship Team</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Ushering"/> Ushering</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Prayer Team"/> Prayer Team</label>
+              <label class="check-item"><input type="checkbox" class="j-ministry" value="Media"/> Media</label>
             </div>
           </div>
           <div class="field-group">
             <label>Your Faith Journey</label>
-            <textarea placeholder="Tell us a little about yourself — where you are in your faith and what draws you to Mission Church…" style="min-height:110px;"></textarea>
+            <textarea id="j-faith" placeholder="Tell us a little about yourself — where you are in your faith and what draws you to Mission Church…" style="min-height:110px;"></textarea>
           </div>
-          <button class="submit-btn" onclick="submitForm(this)">Submit Membership Application →</button>
+          <button class="submit-btn" id="j-submit-btn" onclick="submitJoin()">Submit Membership Application →</button>
         </div>
 
         <!-- GENERAL TAB -->
         <div class="form-pane" id="pane-general">
           <div class="field-row">
-            <div class="field-group"><label>Name</label><input type="text" placeholder="Your name"/></div>
-            <div class="field-group"><label>Email</label><input type="email" placeholder="you@email.com"/></div>
+            <div class="field-group"><label>Name *</label><input type="text" id="g-name" placeholder="Your name"/></div>
+            <div class="field-group"><label>Email *</label><input type="email" id="g-email" placeholder="you@email.com"/></div>
           </div>
           <div class="field-group">
             <label>Subject</label>
-            <select>
+            <select id="g-subject">
               <option value="">Select a topic…</option>
               <option>General Enquiry</option>
               <option>Counselling Request</option>
@@ -696,17 +579,17 @@ div[style*="box-shadow:0 2px 12px"] {
             </select>
           </div>
           <div class="field-group">
-            <label>Your Message</label>
-            <textarea placeholder="Write your message here…" style="min-height:140px;"></textarea>
+            <label>Your Message *</label>
+            <textarea id="g-message" placeholder="Write your message here…" style="min-height:140px;"></textarea>
           </div>
-          <button class="submit-btn" onclick="submitForm(this)">Send Message →</button>
+          <button class="submit-btn" id="g-submit-btn" onclick="submitGeneral()">Send Message →</button>
         </div>
 
         <!-- Success state -->
         <div class="form-success" id="formSuccess">
           <div class="success-icon">🙌</div>
-          <h3>Message Received!</h3>
-          <p>Thank you for reaching out. A member of our team will be in touch very soon.<br><br>God bless you!</p>
+          <h3 id="successTitle">Message Received!</h3>
+          <p id="successMsg">Thank you for reaching out. A member of our team will be in touch very soon.<br><br>God bless you!</p>
           <button class="submit-btn" style="margin-top:24px;max-width:220px;" onclick="resetForm()">Send Another</button>
         </div>
       </div>
@@ -754,20 +637,16 @@ div[style*="box-shadow:0 2px 12px"] {
   </div>
 </section>
 
-<!-- ══════════════════════════════════
-     HEART-SHAPED GOOGLE MAP
-══════════════════════════════════ -->
+<!-- HEART MAP -->
 <section class="map-section">
   <div class="container">
     <div class="section-eyebrow anim-up">We Are Here</div>
     <h2 class="section-title anim-up delay-1" style="color:var(--text);">Find Us on the <em class="gradient-text" style="font-style:normal;">Map</em></h2>
     <p class="section-sub anim-up delay-2" style="margin-bottom:56px;">Right in the heart of Kampala — come home.</p>
 
-    <!-- Hidden SVG clip paths -->
     <svg class="heart-clip-svg" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
-          <!-- Heart path normalised to 0..1 bounding box -->
           <path d="M0.5,0.93 C0.5,0.93 0.05,0.58 0.05,0.35 C0.05,0.18 0.18,0.07 0.32,0.07 C0.40,0.07 0.47,0.12 0.5,0.18 C0.53,0.12 0.60,0.07 0.68,0.07 C0.82,0.07 0.95,0.18 0.95,0.35 C0.95,0.58 0.5,0.93 0.5,0.93 Z"/>
         </clipPath>
         <clipPath id="heartClipOuter" clipPathUnits="objectBoundingBox">
@@ -777,52 +656,29 @@ div[style*="box-shadow:0 2px 12px"] {
     </svg>
 
     <div class="heart-map-wrap anim-scale" id="heartMapSection">
-      <!-- Gold glow outline -->
       <div class="heart-outline"></div>
-
       <div class="heart-frame">
-        <!-- Google Maps embed — Kampala, Uganda -->
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.757627547219!2d32.5811!3d0.3152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbc0f9c07c7b1%3A0x45b3e9f5451a8cc1!2sKampala%2C%20Uganda!5e0!3m2!1sen!2sug!4v1715000000000!5m2!1sen!2sug"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="Mission Church Africa — Kampala Uganda">
         </iframe>
       </div>
-
-      <!-- Floating hearts -->
       <div class="floating-hearts">
-        <span class="fheart">❤️</span>
-        <span class="fheart">🧡</span>
-        <span class="fheart">💛</span>
-        <span class="fheart">❤️</span>
-        <span class="fheart">✨</span>
+        <span class="fheart">❤️</span><span class="fheart">🧡</span>
+        <span class="fheart">💛</span><span class="fheart">❤️</span><span class="fheart">✨</span>
       </div>
     </div>
 
-    <!-- Address cards -->
     <div class="map-address-cards anim-up">
-      <div class="addr-card">
-        <div class="addr-card-icon">🏛</div>
-        <h4>Main Campus</h4>
-        <p>Plot 14 Kampala Road<br>Kampala, Uganda</p>
-      </div>
-      <div class="addr-card">
-        <div class="addr-card-icon">🚗</div>
-        <h4>Getting Here</h4>
-        <p>5 min from Clock Tower<br>Parking available on-site</p>
-      </div>
-      <div class="addr-card">
-        <div class="addr-card-icon">🚌</div>
-        <h4>By Boda / Taxi</h4>
-        <p>Tell driver: "Mission Church<br>Kampala Road"</p>
-      </div>
+      <div class="addr-card"><div class="addr-card-icon">🏛</div><h4>Main Campus</h4><p>Plot 14 Kampala Road<br>Kampala, Uganda</p></div>
+      <div class="addr-card"><div class="addr-card-icon">🚗</div><h4>Getting Here</h4><p>5 min from Clock Tower<br>Parking available on-site</p></div>
+      <div class="addr-card"><div class="addr-card-icon">🚌</div><h4>By Boda / Taxi</h4><p>Tell driver: "Mission Church<br>Kampala Road"</p></div>
     </div>
   </div>
 </section>
 
-<!-- PRAYER REQUEST -->
+<!-- PRAYER REQUEST — redirects to WhatsApp -->
 <section class="prayer-section" id="prayer">
   <div class="container">
     <div class="prayer-grid">
@@ -837,12 +693,19 @@ div[style*="box-shadow:0 2px 12px"] {
       </div>
       <div class="prayer-form-box anim-right">
         <div class="section-eyebrow" style="justify-content:flex-start;">We are believing with you</div>
-        <h3 style="font-size:1.5rem;margin-bottom:24px;color:var(--text);">Your Prayer Request</h3>
-        <div class="field-group"><label>Your Name</label><input type="text" placeholder="First name is fine"/></div>
-        <div class="field-group"><label>Phone / WhatsApp (Optional)</label><input type="tel" placeholder="+256 700 000 000"/></div>
+        <h3 style="font-size:1.5rem;margin-bottom:16px;color:var(--text);">Your Prayer Request</h3>
+
+        <!-- WhatsApp notice -->
+        <div class="prayer-wa-notice">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.478 2 2 6.477 2 11.99c0 1.852.516 3.588 1.414 5.072L2 22l5.068-1.386A9.942 9.942 0 0011.99 22C17.5 22 17.5 22 22 12.01 22 6.5 17.5 2 11.99 2zm0 18.18a8.15 8.15 0 01-4.15-1.136l-.298-.178-3.009.822.85-2.938-.194-.305A8.16 8.16 0 013.82 12c0-4.51 3.67-8.18 8.17-8.18 4.5 0 8.17 3.67 8.17 8.18s-3.67 8.18-8.17 8.18z"/></svg>
+          Your prayer request will be sent directly to our prayer team via <strong>WhatsApp</strong> for immediate intercession.
+        </div>
+
+        <div class="field-group"><label>Your Name</label><input type="text" id="p-name" placeholder="First name is fine"/></div>
+        <div class="field-group"><label>Phone / WhatsApp (Optional)</label><input type="tel" id="p-phone" placeholder="+256 700 000 000"/></div>
         <div class="field-group">
           <label>Prayer Category</label>
-          <select>
+          <select id="p-category">
             <option value="">Choose category…</option>
             <option>Health & Healing</option>
             <option>Family & Relationships</option>
@@ -855,13 +718,16 @@ div[style*="box-shadow:0 2px 12px"] {
         </div>
         <div class="field-group">
           <label>Your Prayer Request</label>
-          <textarea placeholder="Share your heart — our prayer team treats all requests with absolute confidentiality." style="min-height:130px;"></textarea>
+          <textarea id="p-request" placeholder="Share your heart — our prayer team treats all requests with absolute confidentiality." style="min-height:130px;"></textarea>
         </div>
         <label class="check-item" style="margin-bottom:18px;display:flex;">
-          <input type="checkbox" style="margin-right:8px;accent-color:var(--gold2);"/>
+          <input type="checkbox" id="p-followup" style="margin-right:8px;accent-color:var(--gold2);"/>
           I would like the prayer team to follow up with me personally
         </label>
-        <button class="submit-btn" onclick="submitPrayer(this)">🙏 Submit Prayer Request</button>
+        <button class="wa-submit-btn" onclick="submitPrayer()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.478 2 2 6.477 2 11.99c0 1.852.516 3.588 1.414 5.072L2 22l5.068-1.386A9.942 9.942 0 0011.99 22C17.5 22 22 17.522 22 12.01 22 6.5 17.5 2 11.99 2zm0 18.18a8.15 8.15 0 01-4.15-1.136l-.298-.178-3.009.822.85-2.938-.194-.305A8.16 8.16 0 013.82 12c0-4.51 3.67-8.18 8.17-8.18 4.5 0 8.17 3.67 8.17 8.18s-3.67 8.18-8.17 8.18z"/></svg>
+          🙏 Send Prayer Request via WhatsApp
+        </button>
       </div>
     </div>
   </div>
@@ -905,48 +771,495 @@ div[style*="box-shadow:0 2px 12px"] {
 
 <script src="nav-footer.js"></script>
 <script src="shared.js"></script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ALL JAVASCRIPT — NAVIGATION + REVEAL + EMAILJS + ORBIT FABs
+══════════════════════════════════════════════════════════════ -->
 <script>
-// ── FORM TABS ──
-function switchTab(name) {
-  document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.form-pane').forEach(p => p.classList.remove('active'));
-  document.getElementById('formSuccess').style.display = 'none';
-  event.target.classList.add('active');
-  document.getElementById('pane-' + name).classList.add('active');
+/* ════════════════════════════════════════════
+   ① EMAILJS CONFIGURATION
+   ────────────────────────────────────────────
+   1. Go to https://www.emailjs.com and sign up free
+   2. Create a Service (Gmail / Outlook / custom SMTP)
+   3. Create 3 Email Templates (one per form type)
+      — template variables listed below each config
+   4. Copy your Public Key, Service ID, Template IDs here
+════════════════════════════════════════════ */
+const EMAILJS_CONFIG = {
+  publicKey:          '611HalgS8FVqNQLRD',       // from EmailJS dashboard → Account
+  serviceId:          'service_ac7ns0i',        // from EmailJS → Email Services
+  visitTemplateId:    'template_teunvv6',         // Plan a Visit template
+  joinTemplateId:     'template_teunvv6',          // Join the Church template
+  generalTemplateId:  'template_teunvv6',       // General Enquiry template
+};
+
+/* WhatsApp number for prayer requests — update this */
+const CHURCH_WHATSAPP = '256700000000';         // no + sign, no spaces
+
+/* Church email that receives all messages (also set in EmailJS template) */
+const CHURCH_EMAIL = 'zioninterpentchurch@gmail.com';
+
+/* ════════════════════════════════════════════
+   ② INIT EmailJS
+════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+});
+
+/* ════════════════════════════════════════════
+   ③ UTILITY HELPERS
+════════════════════════════════════════════ */
+function genRef(prefix) {
+  return `${prefix}-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
 }
 
-// ── FORM SUBMIT ──
-function submitForm(btn) {
-  const panel = btn.closest('.form-panel');
-  panel.querySelectorAll('.form-tab, .form-pane').forEach(el => el.style.display = 'none');
-  document.getElementById('formSuccess').style.display = 'block';
+function nowString() {
+  return new Date().toLocaleString('en-UG', { dateStyle: 'full', timeStyle: 'short' });
 }
-function resetForm() {
-  document.querySelectorAll('.form-tab').forEach(t => t.style.display = '');
+
+function showError(msg) {
+  const toast = document.getElementById('formErrorToast');
+  document.getElementById('formErrorMsg').textContent = msg;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 6000);
+}
+
+function setButtonLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  if (loading) {
+    btn.disabled = true;
+    btn.dataset.originalText = btn.textContent;
+    btn.innerHTML = `<span class="btn-spinner"></span> Sending…`;
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = btn.dataset.originalText || 'Submit';
+  }
+}
+
+function showSuccess(title, msg) {
+  // Hide tabs + panes
+  document.querySelectorAll('.form-tab, .form-pane').forEach(el => el.style.display = 'none');
+  document.getElementById('formErrorToast').style.display = 'none';
+
+  const s = document.getElementById('formSuccess');
+  document.getElementById('successTitle').textContent = title;
+  document.getElementById('successMsg').innerHTML = msg;
+  s.style.display = 'block';
+
+  // Scroll to success
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ════════════════════════════════════════════
+   ④ FORM TAB SWITCHER
+════════════════════════════════════════════ */
+function switchTab(name, clickedBtn) {
+  // Re-show elements if coming back from success
+  document.querySelectorAll('.form-tab').forEach(t => { t.style.display = ''; t.classList.remove('active'); });
   document.querySelectorAll('.form-pane').forEach(p => { p.style.display = ''; p.classList.remove('active'); });
-  document.querySelectorAll('.form-tabs .form-tab')[0].classList.add('active');
-  document.getElementById('pane-visit').classList.add('active');
   document.getElementById('formSuccess').style.display = 'none';
+  document.getElementById('formErrorToast').style.display = 'none';
+
+  if (clickedBtn) clickedBtn.classList.add('active');
+  const pane = document.getElementById('pane-' + name);
+  if (pane) pane.classList.add('active');
 }
 
-// ── PRAYER SUBMIT ──
-function submitPrayer(btn) {
-  btn.textContent = '✅ Request Submitted — We Are Praying!';
+/* ════════════════════════════════════════════
+   ⑤ SUBMIT — PLAN A VISIT
+   EmailJS template variables:
+     {{ref_no}}  {{submitted_at}}
+     {{v_full_name}}  {{v_phone}}  {{v_email}}
+     {{v_service}}  {{v_source}}  {{v_notes}}
+     {{to_email}}
+════════════════════════════════════════════ */
+/* ════════════════════════════════════════════
+   ⑤ SUBMIT — PLAN A VISIT
+════════════════════════════════════════════ */
+async function submitVisit() {
+  const firstName = document.getElementById('v-first').value.trim();
+  const lastName  = document.getElementById('v-last').value.trim();
+  const email     = document.getElementById('v-email').value.trim();
+
+  if (!firstName || !lastName) {
+    showError('Please enter your first and last name.');
+    return;
+  }
+
+  if (!email || !email.includes('@')) {
+    showError('Please enter a valid email address.');
+    return;
+  }
+
+  setButtonLoading('v-submit-btn', true);
+
+  const params = {
+    form_type: 'Plan a Visit',
+    ref_no: genRef('VIS'),
+    submitted_at: nowString(),
+    to_email: CHURCH_EMAIL,
+    reply_to: email,
+
+    submitter_name: `${firstName} ${lastName}`,
+    submitter_email: email,
+    submitter_phone: document.getElementById('v-phone').value.trim() || 'Not provided',
+
+    field_1_label: 'Preferred Service',
+    field_1_value: document.getElementById('v-service').value || 'Not specified',
+
+    field_2_label: 'Heard About Us Via',
+    field_2_value: document.getElementById('v-source').value || 'Not specified',
+
+    field_3_label:'—', field_3_value:'—',
+    field_4_label:'—', field_4_value:'—',
+    field_5_label:'—', field_5_value:'—',
+    field_6_label:'—', field_6_value:'—',
+    field_7_label:'—', field_7_value:'—',
+
+    field_8_label:'Special Notes',
+    field_8_value: document.getElementById('v-notes').value.trim() || 'None',
+
+    message_body: document.getElementById('v-notes').value.trim() || 'No additional notes.',
+
+    next_steps_label:'What Happens Next',
+    next_steps:'Our Welcome Team will contact the visitor before Sunday.'
+  };
+
+  try {
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.visitTemplateId, params);
+    setButtonLoading('v-submit-btn', false);
+
+    showSuccess('Visit Booked! 🙌',
+      `Thank you, <strong>${firstName}</strong>! Your visit booking has been received.`
+    );
+  } catch (err) {
+    console.error(err);
+    setButtonLoading('v-submit-btn', false);
+    showError('Could not send your booking.');
+  }
+}
+
+/* ════════════════════════════════════════════
+   ⑥ SUBMIT — JOIN THE CHURCH
+════════════════════════════════════════════ */
+async function submitJoin() {
+  const name  = document.getElementById('j-name').value.trim();
+  const phone = document.getElementById('j-phone').value.trim();
+  const email = document.getElementById('j-email').value.trim();
+
+  if (!name || !phone || !email) {
+    showError('Please complete all required fields.');
+    return;
+  }
+
+  const ministries = [...document.querySelectorAll('.j-ministry:checked')]
+    .map(cb => cb.value).join(', ') || 'None selected';
+
+  setButtonLoading('j-submit-btn', true);
+
+  const params = {
+    form_type:'Join the Church',
+    ref_no:genRef('MEM'),
+    submitted_at:nowString(),
+    to_email:CHURCH_EMAIL,
+    reply_to:email,
+
+    submitter_name:name,
+    submitter_email:email,
+    submitter_phone:phone,
+
+    field_1_label:'Date of Birth',
+    field_1_value:document.getElementById('j-dob').value || 'Not provided',
+
+    field_2_label:'Area',
+    field_2_value:document.getElementById('j-area').value.trim() || 'Not provided',
+
+    field_3_label:'Campus',
+    field_3_value:document.getElementById('j-campus').value || 'Not specified',
+
+    field_4_label:'Ministries',
+    field_4_value:ministries,
+
+    field_5_label:'Faith Journey',
+    field_5_value:document.getElementById('j-faith').value.trim() || 'Not provided',
+
+    field_6_label:'—', field_6_value:'—',
+    field_7_label:'—', field_7_value:'—',
+    field_8_label:'—', field_8_value:'—',
+
+    message_body:document.getElementById('j-faith').value.trim() || 'No message provided.',
+
+    next_steps_label:'Next Steps',
+    next_steps:'Pastoral team will contact applicant within 3–5 business days.'
+  };
+
+  try {
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.joinTemplateId, params);
+    setButtonLoading('j-submit-btn', false);
+
+    showSuccess('Application Submitted! ✝️',
+      `Welcome, <strong>${name}</strong>!`
+    );
+  } catch (err) {
+    console.error(err);
+    setButtonLoading('j-submit-btn', false);
+    showError('Could not send your application.');
+  }
+}
+
+/* ════════════════════════════════════════════
+   ⑦ SUBMIT — GENERAL ENQUIRY
+════════════════════════════════════════════ */
+async function submitGeneral() {
+  const name = document.getElementById('g-name').value.trim();
+  const email = document.getElementById('g-email').value.trim();
+  const message = document.getElementById('g-message').value.trim();
+
+  if (!name || !email || !message) {
+    showError('Please complete all required fields.');
+    return;
+  }
+
+  setButtonLoading('g-submit-btn', true);
+
+  const params = {
+    form_type:'General Enquiry',
+    ref_no:genRef('ENQ'),
+    submitted_at:nowString(),
+    to_email:CHURCH_EMAIL,
+    reply_to:email,
+
+    submitter_name:name,
+    submitter_email:email,
+    submitter_phone:'Not provided',
+
+    field_1_label:'Subject',
+    field_1_value:document.getElementById('g-subject').value || 'General Enquiry',
+
+    field_2_label:'—', field_2_value:'—',
+    field_3_label:'—', field_3_value:'—',
+    field_4_label:'—', field_4_value:'—',
+    field_5_label:'—', field_5_value:'—',
+    field_6_label:'—', field_6_value:'—',
+    field_7_label:'—', field_7_value:'—',
+    field_8_label:'—', field_8_value:'—',
+
+    message_body:message,
+
+    next_steps_label:'Response Time',
+    next_steps:'Church office will respond within 24 hours.'
+  };
+
+  try {
+    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.generalTemplateId, params);
+    setButtonLoading('g-submit-btn', false);
+
+    showSuccess('Message Sent! 💬',
+      `Thank you, <strong>${name}</strong>.`
+    );
+  } catch (err) {
+    console.error(err);
+    setButtonLoading('g-submit-btn', false);
+    showError('Could not send your message.');
+  }
+}
+
+/* ════════════════════════════════════════════
+   ⑨ PRAYER REQUEST → WHATSAPP
+   Builds a formatted WhatsApp message and
+   opens wa.me link — no email needed
+════════════════════════════════════════════ */
+function submitPrayer() {
+  const name     = document.getElementById('p-name').value.trim();
+  const phone    = document.getElementById('p-phone').value.trim();
+  const category = document.getElementById('p-category').value;
+  const request  = document.getElementById('p-request').value.trim();
+  const followup = document.getElementById('p-followup').checked;
+
+  if (!request) {
+    alert('Please write your prayer request before submitting.');
+    return;
+  }
+
+  /* Build a nicely formatted WhatsApp message */
+  const lines = [
+    `🙏 *PRAYER REQUEST — Mission Church Africa*`,
+    ``,
+    `*Name:* ${name || 'Anonymous'}`,
+    phone ? `*Phone:* ${phone}` : null,
+    category ? `*Category:* ${category}` : null,
+    ``,
+    `*Request:*`,
+    request,
+    ``,
+    followup ? `✅ _This person would like a personal follow-up._` : null,
+    ``,
+    `_Submitted via missionchurchafrica.org — ${nowString()}_`,
+  ].filter(line => line !== null).join('\n');
+
+  const encoded = encodeURIComponent(lines);
+  const waUrl   = `https://wa.me/${CHURCH_WHATSAPP}?text=${encoded}`;
+
+  /* Open WhatsApp */
+  window.open(waUrl, '_blank');
+
+  /* Give visual feedback */
+  const btn = document.querySelector('.wa-submit-btn');
   btn.style.background = 'linear-gradient(135deg,#1a5e2f,#27ae60)';
-  btn.disabled = true;
+  btn.innerHTML = `✅ Opening WhatsApp…`;
+  btn.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    btn.style.background = 'linear-gradient(135deg,#075E54,#25D366)';
+    btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.478 2 2 6.477 2 11.99c0 1.852.516 3.588 1.414 5.072L2 22l5.068-1.386A9.942 9.942 0 0011.99 22C17.5 22 22 17.522 22 12.01 22 6.5 17.5 2 11.99 2z"/></svg> 🙏 Send Prayer Request via WhatsApp`;
+    btn.style.pointerEvents = '';
+  }, 4000);
 }
 
-// ── DONATE MODAL ──
-function openDonateModal(e) { e.preventDefault(); document.getElementById('donateModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
-function closeDonateModal() { document.getElementById('donateModal').classList.remove('open'); document.body.style.overflow = ''; }
-document.getElementById('donateModal').addEventListener('click', e => { if(e.target === e.currentTarget) closeDonateModal(); });
+/* ════════════════════════════════════════════
+   ⑩ DONATE MODAL
+════════════════════════════════════════════ */
+function openDonateModal(e) {
+  e.preventDefault();
+  document.getElementById('donateModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDonateModal() {
+  document.getElementById('donateModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('donateModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeDonateModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDonateModal();
+});
 
-// ══════════════════════════════════════════
-// ORBIT ANIMATION
-// ══════════════════════════════════════════
+/* ════════════════════════════════════════════
+   ⑪ NAVIGATION
+════════════════════════════════════════════ */
+function initNav() {
+  const header = document.querySelector('.nav-header') || document.getElementById('navHeader');
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+
+  if (header) {
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }
+
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+    });
+
+    document.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('open') &&
+          !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  if (navLinks) {
+    navLinks.querySelectorAll('li > a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const li = link.parentElement;
+        const dropdown = li.querySelector('.nav-dropdown');
+        if (dropdown && window.innerWidth <= 900) {
+          e.preventDefault();
+          li.classList.toggle('open');
+        } else if (window.innerWidth <= 900 && hamburger && navLinks) {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  }
+
+  // Active link
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    if (a.getAttribute('href') === page) a.classList.add('active');
+  });
+}
+
+/* ════════════════════════════════════════════
+   ⑫ SCROLL REVEAL
+════════════════════════════════════════════ */
+function initReveal() {
+  const els = document.querySelectorAll('.anim-up, .anim-left, .anim-right, .anim-scale');
+  if (!els.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+/* ════════════════════════════════════════════
+   ⑬ COUNTER ANIMATION
+════════════════════════════════════════════ */
+function initCounters() {
+  const counters = document.querySelectorAll('[data-count]');
+  if (!counters.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = +el.dataset.count;
+        const suffix = el.dataset.suffix || '';
+        let current = 0;
+        const step = target / (2000 / 16);
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = Math.floor(current).toLocaleString() + suffix;
+          if (current >= target) clearInterval(timer);
+        }, 16);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(el => obs.observe(el));
+}
+
+/* ════════════════════════════════════════════
+   ⑭ GIVING MODAL (shared.js compatible)
+════════════════════════════════════════════ */
+function initGivingModal() {
+  const modal = document.getElementById('givingModal');
+  if (!modal) return;
+  document.querySelectorAll('[data-open-giving]').forEach(btn => {
+    btn.addEventListener('click', () => modal.classList.add('open'));
+  });
+  document.querySelectorAll('[data-close-giving]').forEach(btn => {
+    btn.addEventListener('click', () => modal.classList.remove('open'));
+  });
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.classList.remove('open');
+  });
+}
+
+/* ════════════════════════════════════════════
+   ⑮ ORBIT FAB ANIMATION
+════════════════════════════════════════════ */
 (function() {
   const donate = document.getElementById('fabDonate');
   const wa     = document.getElementById('fabWhatsapp');
+  if (!donate || !wa) return;
+
   const MARGIN_X = 24, MARGIN_Y = 24;
   let donateP = 0, waP = 0.15;
   const SPEED = 60;
@@ -954,23 +1267,25 @@ document.getElementById('donateModal').addEventListener('click', e => { if(e.tar
 
   function perimeterToXY(t) {
     const W = window.innerWidth, H = window.innerHeight;
-    const top = W - MARGIN_X * 2, right = H - MARGIN_Y * 2;
-    const bottom = W - MARGIN_X * 2, left = H - MARGIN_Y * 2;
-    const total = top + right + bottom + left;
-    const dist = ((t % 1) + 1) % 1 * total;
+    const top    = W - MARGIN_X * 2;
+    const right  = H - MARGIN_Y * 2;
+    const bottom = W - MARGIN_X * 2;
+    const left   = H - MARGIN_Y * 2;
+    const total  = top + right + bottom + left;
+    const dist   = ((t % 1) + 1) % 1 * total;
     let x, y;
-    if (dist < top) { x = MARGIN_X + dist; y = MARGIN_Y; }
-    else if (dist < top + right) { x = W - MARGIN_X; y = MARGIN_Y + (dist - top); }
-    else if (dist < top + right + bottom) { x = W - MARGIN_X - (dist - top - right); y = H - MARGIN_Y; }
-    else { x = MARGIN_X; y = H - MARGIN_Y - (dist - top - right - bottom); }
+    if (dist < top)                          { x = MARGIN_X + dist;                          y = MARGIN_Y; }
+    else if (dist < top + right)             { x = W - MARGIN_X;                             y = MARGIN_Y + (dist - top); }
+    else if (dist < top + right + bottom)    { x = W - MARGIN_X - (dist - top - right);      y = H - MARGIN_Y; }
+    else                                     { x = MARGIN_X;                                  y = H - MARGIN_Y - (dist - top - right - bottom); }
     return { x, y };
   }
 
   function frame(ts) {
     if (!lastTime) lastTime = ts;
-    const dt = (ts - lastTime) / 1000; lastTime = ts;
+    const dt   = (ts - lastTime) / 1000; lastTime = ts;
     const perim = 2*(window.innerWidth - MARGIN_X*2) + 2*(window.innerHeight - MARGIN_Y*2);
-    const step = (SPEED * dt) / perim;
+    const step  = (SPEED * dt) / perim;
     donateP = (donateP + step) % 1;
     waP     = (waP + step) % 1;
     const dPos = perimeterToXY(donateP);
@@ -983,6 +1298,16 @@ document.getElementById('donateModal').addEventListener('click', e => { if(e.tar
   }
   requestAnimationFrame(frame);
 })();
+
+/* ════════════════════════════════════════════
+   ⑯ BOOT
+════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initNav();
+  initReveal();
+  initCounters();
+  initGivingModal();
+});
 </script>
 </body>
 </html>
