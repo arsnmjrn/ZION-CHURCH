@@ -1,532 +1,988 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zion Membership Form</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"/>
-
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact & Visit — Mission Church Africa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
 <style>
-  html,body{
-overflow-x:hidden;
-font-family:'Poppins',sans-serif;
-scroll-behavior:smooth;
+
+/* ═══════════════════════════════════════
+   PAGE HERO
+═══════════════════════════════════════ */
+.contact-hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 90px;
+  position: relative;
+  overflow: hidden;
+  background: var(--deep2);
+}
+.contact-hero-bg {
+  position: absolute; inset: 0;
+  background: url('mission (2).jpg') center/cover;
+  opacity: 0.28;
+}
+.contact-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--deep) 0%, rgba(26,18,8,.6) 60%, transparent 100%);
+}
+.contact-hero-content {
+  position: relative; z-index: 2;
+  padding-top: 130px;
+}
+.contact-hero-content h1 { color: white; margin-bottom: 14px; }
+.breadcrumb { display:flex; align-items:center; gap:8px; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:20px; }
+.breadcrumb a { color:var(--gold2); }
+
+/* ═══════════════════════════════════════
+   QUICK INFO STRIP
+═══════════════════════════════════════ */
+.quick-info {
+  background: white;
+  border-bottom: 1px solid var(--rim);
+  box-shadow: 0 8px 40px rgba(26,18,8,.07);
+  position: relative; z-index: 10;
+}
+.quick-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.qi-item {
+  padding: 34px 28px;
+  border-right: 1px solid var(--rim);
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 18px;
+}
+.qi-item:last-child { border-right: none; }
+.qi-item:hover { background: var(--ivory); }
+.qi-icon {
+  width: 50px; height: 50px; flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 16px rgba(184,134,11,.25);
+}
+.qi-text strong { display:block; font-size:.88rem; color:var(--text); font-family:var(--font-body); font-weight:700; margin-bottom:3px; }
+.qi-text span { font-size:.78rem; color:var(--text-mute); }
+
+/* ═══════════════════════════════════════
+   MAIN CONTACT LAYOUT
+═══════════════════════════════════════ */
+.contact-main { background: var(--cream); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 72px;
+  align-items: start;
 }
 
-:root{
---blue:#2563eb;
---purple:#7c3aed;
---orange:#f97316;
---pink:#ec4899;
---dark:#0b1020;
+/* ── FORM PANEL ── */
+.form-panel {
+  background: white;
+  border: 1px solid var(--rim);
+  border-radius: 10px;
+  padding: 50px 44px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.form-panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold2), var(--gold-dark));
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+/* Tab switcher */
+.form-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+  border: 1px solid var(--rim);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.form-tab {
+  flex: 1; padding: 12px 10px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; text-align: center; cursor: pointer;
+  background: transparent; color: var(--text-mute);
+  border: none; transition: var(--transition);
+  font-family: var(--font-body);
+}
+.form-tab.active {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold2));
+  color: white;
+}
+.form-tab:not(.active):hover { background: var(--ivory); color: var(--gold-dark); }
+
+.form-pane { display: none; }
+.form-pane.active { display: block; }
+
+/* Fields */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-group { margin-bottom: 18px; }
+.field-group label {
+  display: block; font-size: .68rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--gold-dark);
+  font-weight: 700; margin-bottom: 7px; font-family: var(--font-body);
+}
+.field-group input,
+.field-group select,
+.field-group textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--rim2);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: .88rem;
+  color: var(--text);
+  background: var(--warm-white);
+  outline: none;
+  transition: var(--transition);
+}
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  border-color: var(--gold2);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(218,165,32,.12);
+}
+.field-group textarea { resize: vertical; min-height: 100px; }
+.field-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M6 8L0 0h12z' fill='%23B8860B'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+
+/* Checkboxes */
+.check-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.check-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--ivory); border: 1px solid var(--rim);
+  border-radius: 4px; padding: 8px 14px; cursor: pointer;
+  font-size: .78rem; color: var(--text-dim); transition: var(--transition);
+  font-family: var(--font-body);
+}
+.check-item input { accent-color: var(--gold2); }
+.check-item:hover { border-color: var(--gold2); color: var(--gold-dark); }
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold2));
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 8px 28px rgba(184,134,11,.3);
+  margin-top: 8px;
+}
+.submit-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(184,134,11,.4); }
+
+/* Form success */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+  animation: fadeIn .5s ease;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+.success-icon { font-size: 3.5rem; margin-bottom: 16px; }
+.form-success h3 { font-size: 1.6rem; color: var(--gold-dark); margin-bottom: 10px; }
+.form-success p { color: var(--text-dim); }
+
+/* ═══════════════════════════════════════
+   HEART MAP SECTION
+═══════════════════════════════════════ */
+.map-section { background: var(--ivory); }
+
+.heart-map-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 60px;
 }
 
-body{
-font-family:'Poppins',sans-serif;
-background:linear-gradient(135deg,#dbeafe,#fce7f3,#dcfce7,#fff7ed);
-color:#111;
-overflow-x:hidden;
+/* SVG clip path heart */
+.heart-clip-svg {
+  position: absolute;
+  width: 0; height: 0;
+  overflow: hidden;
 }
 
-/* HEADER */
-header{
-position:fixed;
-top:0;
-width:100%;
-z-index:999;
-backdrop-filter:blur(18px);
-background:rgba(255,255,255,.75);
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px 40px;
-box-shadow:0 10px 30px rgba(0,0,0,.08);
+.heart-frame {
+  position: relative;
+  width: 100%;
+  padding-bottom: 90%;   /* roughly heart proportions */
 }
 
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
-font-weight:700;
+/* The actual iframe sits inside; clipped by clip-path */
+.heart-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  /* CSS heart clip-path */
+  clip-path: url(#heartClip);
+  -webkit-clip-path: url(#heartClip);
 }
 
-.logo img{
-width:55px;
-height:55px;
-border-radius:50%;
+/* Decorative outline/glow ring around the heart */
+.heart-outline {
+  position: absolute;
+  inset: -6px;
+  background: transparent;
+  clip-path: url(#heartClipOuter);
+  -webkit-clip-path: url(#heartClipOuter);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold2), var(--gold-light), var(--gold));
+  animation: heartGlow 3s ease-in-out infinite;
+  z-index: -1;
+  border-radius: 4px;
+}
+@keyframes heartGlow {
+  0%, 100% { opacity: .7; filter: blur(4px); }
+  50%       { opacity: 1;  filter: blur(2px); }
 }
 
-/* FORM */
-.container{
-max-width:700px;
-margin:140px auto 80px;
-background:rgba(255,255,255,.75);
-backdrop-filter:blur(18px);
-padding:40px;
-border-radius:24px;
-box-shadow:0 20px 60px rgba(124,58,237,.18);
+/* Floating hearts decoration */
+.floating-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fheart {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: floatHeart 4s ease-in-out infinite;
+}
+.fheart:nth-child(1) { left: 10%; bottom: 0; animation-delay: 0s; }
+.fheart:nth-child(2) { left: 30%; bottom: 0; animation-delay: .8s; font-size: .8rem; }
+.fheart:nth-child(3) { left: 55%; bottom: 0; animation-delay: 1.6s; font-size: 1rem; }
+.fheart:nth-child(4) { left: 75%; bottom: 0; animation-delay: 2.4s; font-size: .7rem; }
+.fheart:nth-child(5) { left: 90%; bottom: 0; animation-delay: 3.2s; }
+@keyframes floatHeart {
+  0%   { opacity: 0; transform: translateY(0) scale(.8); }
+  20%  { opacity: .7; }
+  100% { opacity: 0; transform: translateY(-200px) scale(1.2); }
 }
 
-.container h2{
-font-family:'Playfair Display';
-font-size:38px;
-text-align:center;
-margin-bottom:25px;
-background:linear-gradient(90deg,var(--blue),var(--purple),var(--orange));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+/* Address card below map */
+.map-address-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.addr-card {
+  background: white;
+  border: 1px solid var(--rim);
+  border-radius: 8px;
+  padding: 22px 18px;
+  text-align: center;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(26,18,8,.05);
+}
+.addr-card:hover { transform: translateY(-5px); box-shadow: var(--glow); border-color: var(--rim2); }
+.addr-card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.addr-card h4 { font-size: .88rem; color: var(--gold-dark); margin-bottom: 6px; font-family: var(--font-body); font-weight: 700; }
+.addr-card p { font-size: .78rem; color: var(--text-dim); line-height: 1.5; }
+
+/* ═══════════════════════════════════════
+   PRAYER REQUEST
+═══════════════════════════════════════ */
+.prayer-section {
+  background: linear-gradient(135deg, var(--deep2) 0%, #2C1F0A 50%, var(--deep2) 100%);
+  position: relative; overflow: hidden;
+}
+.prayer-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url('mission (5).jpg') center/cover;
+  opacity: .08;
+}
+.prayer-section .container { position: relative; z-index: 2; }
+.prayer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.prayer-left h2 { color: white; margin-bottom: 20px; }
+.prayer-left p { color: rgba(255,255,255,.6); margin-bottom: 32px; }
+.prayer-verse {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-left: 3px solid var(--gold2);
+  border-radius: 6px;
+  padding: 22px 24px;
+  font-style: italic;
+  color: rgba(255,255,255,.7);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.prayer-verse cite { display: block; margin-top: 10px; font-size: .75rem; font-style: normal; letter-spacing: .15em; color: var(--gold2); font-family: var(--font-body); }
+
+.prayer-form-box {
+  background: white;
+  border-radius: 10px;
+  padding: 42px 38px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.prayer-form-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold2));
 }
 
-.progress{
-height:8px;
-background:linear-gradient(90deg,var(--blue),var(--purple),var(--orange));
-border-radius:30px;
-width:0%;
-margin-bottom:25px;
-transition:.4s;
+/* ═══════════════════════════════════════
+   SERVICE TIMES SIDEBAR (on contact page)
+═══════════════════════════════════════ */
+.side-service-times {
+  background: var(--ivory);
+  border: 1px solid var(--rim);
+  border-radius: 8px;
+  padding: 32px;
+  margin-top: 28px;
+}
+.side-service-times h4 {
+  font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold); font-family: var(--font-body); font-weight: 700;
+  margin-bottom: 20px;
+}
+.sst-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid var(--rim);
+}
+.sst-row:last-child { border-bottom: none; }
+.sst-day { font-size: .83rem; font-weight: 600; color: var(--text); }
+.sst-time { font-size: .78rem; color: var(--gold-dark); font-weight: 600; }
+
+/* ═══════════════════════════════════════
+   FLOATING BUTTONS (same as index)
+═══════════════════════════════════════ */
+.fab-orbit-wrap { position:fixed; inset:0; z-index:9990; pointer-events:none; }
+.fab-donate, .fab-whatsapp { position:absolute; pointer-events:all; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; text-decoration:none; }
+.fab-donate-btn { width:62px; height:62px; border-radius:50%; background:linear-gradient(135deg,#8B1A1A,#C0392B); display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:white; border:2.5px solid rgba(255,255,255,.35); box-shadow:0 0 0 0 rgba(192,57,43,.6); animation:fabPulse 2.4s ease-out infinite; transition:transform .3s ease; }
+.fab-donate-btn:hover { transform:scale(1.15); }
+.fab-donate-label { font-size:.58rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:#8B1A1A; background:white; padding:2px 7px; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,.12); white-space:nowrap; }
+.fab-wa-btn { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#075E54,#25D366); display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:white; border:2px solid rgba(255,255,255,.3); box-shadow:0 0 0 0 rgba(37,211,102,.5); animation:waPulse 2.4s ease-out infinite; animation-delay:.4s; transition:transform .3s ease; }
+.fab-wa-btn:hover { transform:scale(1.15); }
+.fab-wa-label { font-size:.55rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:#075E54; background:white; padding:2px 6px; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,.12); white-space:nowrap; }
+@keyframes fabPulse { 0%{box-shadow:0 0 0 0 rgba(192,57,43,.6)} 70%{box-shadow:0 0 0 18px rgba(192,57,43,0)} 100%{box-shadow:0 0 0 0 rgba(192,57,43,0)} }
+@keyframes waPulse { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)} 70%{box-shadow:0 0 0 16px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 1000px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .prayer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .quick-info-grid { grid-template-columns: 1fr 1fr; }
+  .qi-item:nth-child(2) { border-right: none; }
+}
+@media (max-width: 600px) {
+  .quick-info-grid { grid-template-columns: 1fr; }
+  .qi-item { border-right: none; }
+  .form-panel { padding: 30px 22px; }
+  .field-row { grid-template-columns: 1fr; }
+  .map-address-cards { grid-template-columns: 1fr; }
+  .prayer-form-box { padding: 28px 20px; }
 }
 
-.step{
-display:none;
-animation:fade .5s ease;
+/* ═══════════════════════════════════════════
+   GLOBAL 3D SHADOW SYSTEM — CONTACT PAGE
+═══════════════════════════════════════════ */
+
+/* --- Quick info strip --- */
+.quick-info {
+  box-shadow:
+    0 4px 8px rgba(26,18,8,.06),
+    0 12px 32px rgba(26,18,8,.09),
+    0 24px 64px rgba(26,18,8,.05) !important;
+}
+.qi-item:hover {
+  box-shadow: inset 0 -3px 0 var(--gold2), 0 8px 24px rgba(184,134,11,.10) !important;
+}
+.qi-icon {
+  box-shadow:
+    0 4px 10px rgba(184,134,11,.30),
+    0 10px 28px rgba(184,134,11,.20),
+    inset 0 1px 0 rgba(255,255,255,.25) !important;
 }
 
-.step.active{
-display:block;
+/* --- Form panel --- */
+.form-panel {
+  box-shadow:
+    0 4px 8px rgba(26,18,8,.07),
+    0 16px 40px rgba(26,18,8,.11),
+    0 40px 80px rgba(26,18,8,.08) !important;
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
+/* --- Buttons --- */
+.submit-btn {
+  box-shadow:
+    0 2px 4px rgba(139,105,20,.20),
+    0 8px 20px rgba(184,134,11,.30),
+    0 20px 48px rgba(184,134,11,.15),
+    inset 0 1px 0 rgba(255,255,255,.20) !important;
+}
+.submit-btn:hover {
+  box-shadow:
+    0 4px 8px rgba(139,105,20,.25),
+    0 16px 36px rgba(184,134,11,.40),
+    0 32px 64px rgba(184,134,11,.20),
+    inset 0 1px 0 rgba(255,255,255,.25) !important;
 }
 
-input,select,textarea{
-width:100%;
-padding:15px;
-margin:12px 0;
-border:none;
-border-radius:14px;
-background:#fff;
-box-shadow:0 8px 18px rgba(0,0,0,.06);
-font-size:15px;
+/* --- Address / campus cards --- */
+.addr-card {
+  box-shadow:
+    0 2px 6px rgba(26,18,8,.06),
+    0 8px 24px rgba(26,18,8,.09),
+    0 20px 48px rgba(26,18,8,.06) !important;
+}
+.addr-card:hover {
+  box-shadow:
+    0 4px 10px rgba(184,134,11,.10),
+    0 16px 36px rgba(184,134,11,.18),
+    0 36px 72px rgba(26,18,8,.14) !important;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-outline:none;
-box-shadow:0 0 0 3px rgba(124,58,237,.2);
+/* --- Map heart glow --- */
+.heart-outline {
+  filter: blur(6px) !important;
+  box-shadow: 0 0 60px rgba(184,134,11,.4), 0 0 120px rgba(184,134,11,.15) !important;
 }
 
-button{
-width:100%;
-padding:15px;
-border:none;
-border-radius:14px;
-background:linear-gradient(135deg,var(--blue),var(--purple));
-color:white;
-font-weight:700;
-cursor:pointer;
-transition:.35s;
-margin-top:15px;
+/* --- Prayer form box --- */
+.prayer-form-box {
+  box-shadow:
+    0 4px 8px rgba(26,18,8,.10),
+    0 20px 48px rgba(26,18,8,.16),
+    0 48px 96px rgba(26,18,8,.12) !important;
 }
 
-button:hover{
-transform:translateY(-4px);
-box-shadow:0 18px 35px rgba(124,58,237,.25);
+/* --- FABs --- */
+.fab-donate-btn {
+  box-shadow:
+    0 4px 8px rgba(139,26,26,.35),
+    0 12px 28px rgba(192,57,43,.40),
+    0 24px 56px rgba(139,26,26,.25),
+    inset 0 1px 0 rgba(255,255,255,.25) !important;
+}
+.fab-wa-btn {
+  box-shadow:
+    0 4px 8px rgba(7,94,84,.30),
+    0 12px 28px rgba(37,211,102,.35),
+    0 24px 56px rgba(7,94,84,.20),
+    inset 0 1px 0 rgba(255,255,255,.20) !important;
+}
+.fab-donate-label, .fab-wa-label {
+  box-shadow: 0 2px 8px rgba(26,18,8,.18), 0 6px 18px rgba(26,18,8,.10) !important;
 }
 
-/* POPUP */
-.popup{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.65);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
+/* --- Service times card --- */
+.side-service-times {
+  box-shadow:
+    0 2px 6px rgba(26,18,8,.05),
+    0 8px 24px rgba(26,18,8,.08),
+    0 20px 48px rgba(26,18,8,.05) !important;
 }
 
-.popup-box{
-background:white;
-padding:35px;
-border-radius:22px;
-text-align:center;
-max-width:420px;
+/* --- Campus info rows --- */
+div[style*="box-shadow:0 2px 12px"] {
+  box-shadow:
+    0 2px 6px rgba(26,18,8,.06),
+    0 8px 24px rgba(26,18,8,.10),
+    0 20px 48px rgba(26,18,8,.06) !important;
 }
 
-/* FOOTER */
-footer{
-background:#0b1020;
-color:#fff;
-padding:80px 60px 20px;
+/* --- Inputs focused --- */
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  box-shadow:
+    0 0 0 3px rgba(218,165,32,.15),
+    0 4px 12px rgba(184,134,11,.12),
+    0 10px 28px rgba(184,134,11,.08) !important;
 }
-
-.footer-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:30px;
-margin-bottom:40px;
-}
-
-.socials{
-display:flex;
-gap:12px;
-margin-top:10px;
-}
-
-.socials a{
-width:42px;height:42px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-background:rgba(255,255,255,0.1);
-transition:.3s;
-}
-
-.socials a:hover{
-background:var(--orange);
-transform:translateY(-8px) rotate(10deg) scale(1.15);
-box-shadow:0 12px 25px rgba(249,115,22,.4);
-}
-
-.footer-bottom{
-text-align:center;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-color:#aaa;
-}
-
-
-
-
-.map-box{
-margin-top:18px;
-border-radius:18px;
-overflow:hidden;
-box-shadow:0 15px 35px rgba(0,0,0,.25);
-transition:.4s;
-position:relative;
-}
-
-.map-box iframe{
-width:100%;
-height:220px;
-border:none;
-display:block;
-}
-
-.map-box:hover{
-transform:translateY(-8px) scale(1.02);
-box-shadow:0 25px 50px rgba(124,58,237,.35);
-}
-
-
-
-
-.map-box::after{
-content:'';
-position:absolute;
-inset:0;
-background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(236,72,153,.15));
-pointer-events:none;
-}
-
-
-/* WHATSAPP */
-.whatsapp{
-position:fixed;
-right:20px;
-bottom:20px;
-width:60px;
-height:60px;
-border-radius:50%;
-background:#25d366;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:26px;
-color:#fff;
-animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}
-70%{box-shadow:0 0 0 25px transparent;}
-}
-
-/* MOBILE */
-@media(max-width:900px){
-.container{
-margin:120px 20px 60px;
-padding:25px;
-}
-
-footer{
-padding:60px 25px 20px;
-}
-}
-
-
-
-
-
-
-.zion-contacts ul{
-    list-style:none;
-    padding:0;
-    margin:0;
-}
-
-.zion-contacts li{
-    margin:14px 0;
-}
-
-.zion-contacts a{
-    text-decoration:none;
-    color:white;
-    font-size:16px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px 18px;
-    border-radius:12px;
-    background:rgba(255,255,255,0.08);
-    transition:all 0.4s ease;
-    backdrop-filter:blur(6px);
-}
-
-.zion-contacts a:hover{
-    background:#25D366;
-    transform:translateX(8px);
-    box-shadow:0 8px 20px rgba(37,211,102,0.35);
-}
-
-.zion-contacts i{
-    font-size:22px;
-    color:#25D366;
-}
-
-.zion-contacts a:hover i{
-    color:white;
-}
-
-
-
-
-
-
-
-
 </style>
 </head>
-
 <body>
+<div id="nav-placeholder"></div>
 
-<header>
-<div class="logo">
-<img src="zipc1.jpeg">
-Zion International Pentecostal Church
-</div>
-</header>
+<!-- PAGE HERO -->
+<section class="contact-hero">
+  <div class="contact-hero-bg"></div>
+  <div class="contact-hero-overlay"></div>
+  <div class="contact-hero-content container">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span>Contact & Visit</span>
+    </div>
+    <h1 style="font-size:clamp(2.8rem,6vw,5rem);">Come <em class="gradient-text" style="font-style:normal;">Find Us</em></h1>
+    <p style="color:rgba(255,255,255,.65);max-width:520px;font-size:1.05rem;">We would love to see your face. Whether you want to visit, join, or just say hello — we are here for you.</p>
+  </div>
+</section>
 
-<div class="container">
-<h2>Membership Registration</h2>
-<div class="progress" id="progress"></div>
-
-<form id="form">
-
-<div class="step active">
-<h3>Personal Information</h3>
-<input name="name" placeholder="Full Name" required>
-<input name="other" placeholder="Other Name">
-<input id="phone" name="phone" required>
-<button type="button" onclick="nextStep()">Next</button>
-</div>
-
-<div class="step">
-<h3>Contact Details</h3>
-<input type="email" name="email" placeholder="Email">
-<input name="address" placeholder="Address">
-<input type="number" name="age" placeholder="Age">
-<button type="button" onclick="nextStep()">Next</button>
-</div>
-
-<div class="step">
-<h3>Spiritual Details</h3>
-<textarea name="reason" placeholder="Why do you want to join?"></textarea>
-<select name="born">
-<option>Born Again</option>
-<option>Not Yet</option>
-</select>
-<button type="submit">Submit</button>
-</div>
-
-</form>
-</div>
-
-<div class="popup" id="popup">
-<div class="popup-box">
-<h2>✅ Submitted</h2>
-<p>Thank you for registering.</p>
-<button onclick="closePopup()">Close</button>
-</div>
-</div>
-
-<!-- FOOTER -->
- <footer>
- <section class="section reveal" id="contact">
-<div class="footer-grid">
-<div>
-<h3>Location</h3>
-<p>Kampala Uganda, Makindye West</p>
-</div>
-<div>
-<h3>Contact</h3>
-<!-----add an imogi for phone-->
-<div class="zion-contacts">
-  <ul>
-    <li>
-      <a href="https://wa.me/13658331162" target="_blank">
-        <i class="fab fa-whatsapp"></i> +1 (365) 833-1162
-      </a>
-    </li>
-
-    <li>
-      <a href="https://wa.me/256765075117" target="_blank">
-        <i class="fab fa-whatsapp"></i> +256 7650 75117
-      </a>
-    </li>
-
-    <li>
-      <a href="https://wa.me/256778758047" target="_blank">
-        <i class="fab fa-whatsapp"></i> +256 7787 58047
-      </a>
-    </li>
-
-    <li>
-      <a href="https://wa.me/256766006871" target="_blank">
-        <i class="fab fa-whatsapp"></i> +256 7660 06871
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div>
-<h3>Follow Us</h3>
-<div class="socials">
-<a href="#"><i class="fab fa-facebook-f"></i></a>
-<a href="#"><i class="fab fa-instagram"></i></a>
-<a href="http://www.youtube.com/@ZIPC-CHURCH"><i class="fab fa-youtube"></i></a>
- <a href="#"><i class="fab fa-tiktok"></i></a>
- <a href="#"><i class="fab fa-x-twitter"></i></a>
-<a href="#"><i class="fab fa-whatsapp"></i></a>
-<a href="#"><i class="fas fa-envelope"></i></a>
-</div>
-</div>
+<!-- QUICK INFO -->
+<div class="quick-info">
+  <div class="container">
+    <div class="quick-info-grid">
+      <div class="qi-item anim-up">
+        <div class="qi-icon">📍</div>
+        <div class="qi-text">
+          <strong>Main Campus</strong>
+          <span>Plot 14 Kampala Road, Kampala, Uganda</span>
+        </div>
+      </div>
+      <div class="qi-item anim-up delay-1">
+        <div class="qi-icon">📞</div>
+        <div class="qi-text">
+          <strong>Call Us</strong>
+          <span>+256 700 000 000</span>
+        </div>
+      </div>
+      <div class="qi-item anim-up delay-2">
+        <div class="qi-icon">✉️</div>
+        <div class="qi-text">
+          <strong>Email Us</strong>
+          <span>hello@missionchurchafrica.org</span>
+        </div>
+      </div>
+      <div class="qi-item anim-up delay-3">
+        <div class="qi-icon">🕐</div>
+        <div class="qi-text">
+          <strong>Office Hours</strong>
+          <span>Mon–Fri · 8 AM – 5 PM</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- MAIN: FORM + SIDE INFO -->
+<section class="contact-main">
+  <div class="container">
+    <div class="section-eyebrow anim-up">Get In Touch</div>
+    <h2 class="section-title anim-up delay-1" style="color:var(--text);">We'd Love to <em class="gradient-text" style="font-style:normal;">Hear From You</em></h2>
+    <p class="section-sub anim-up delay-2">Fill in the form and our team will be in touch within 24 hours.</p>
 
+    <div class="contact-grid">
 
-<div>
-<h3>Location</h3>
-<p>Kampala Uganda, Makindye West</p>
+      <!-- FORM PANEL -->
+      <div class="form-panel anim-left">
 
-<div class="map-box" id="map">
-    <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.41484051279622!2d32.592206858417335!3d0.28977459052733273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sug!4v1777716367786!5m2!1sen!2sug"
-        width="100%"
-        height="250"
+        <!-- Tabs -->
+        <div class="form-tabs">
+          <button class="form-tab active" onclick="switchTab('visit')">🗓 Plan a Visit</button>
+          <button class="form-tab" onclick="switchTab('join')">✝️ Join the Church</button>
+          <button class="form-tab" onclick="switchTab('general')">💬 General Enquiry</button>
+        </div>
 
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
+        <!-- VISIT TAB -->
+        <div class="form-pane active" id="pane-visit">
+          <div class="field-row">
+            <div class="field-group"><label>First Name</label><input type="text" placeholder="e.g. Sarah"/></div>
+            <div class="field-group"><label>Last Name</label><input type="text" placeholder="e.g. Nakato"/></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Phone / WhatsApp</label><input type="tel" placeholder="+256 700 000 000"/></div>
+            <div class="field-group"><label>Email Address</label><input type="email" placeholder="you@email.com"/></div>
+          </div>
+          <div class="field-group">
+            <label>Preferred Sunday Service</label>
+            <select>
+              <option value="">Select a service time…</option>
+              <option>8:00 AM — First Service</option>
+              <option>10:00 AM — Second Service</option>
+              <option>12:00 PM — Third Service</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>How did you hear about us?</label>
+            <select>
+              <option value="">Choose one…</option>
+              <option>Friend or Family</option>
+              <option>Social Media</option>
+              <option>Online Search</option>
+              <option>YouTube / Podcast</option>
+              <option>Drove / walked past</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Anything we should know? (Optional)</label>
+            <textarea placeholder="Dietary needs, mobility requirements, or just a note to say hi…"></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitForm(this)">Book My Visit →</button>
+        </div>
+
+        <!-- JOIN TAB -->
+        <div class="form-pane" id="pane-join">
+          <div class="field-row">
+            <div class="field-group"><label>Full Name</label><input type="text" placeholder="Your full name"/></div>
+            <div class="field-group"><label>Date of Birth</label><input type="date"/></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Phone</label><input type="tel" placeholder="+256 700 000 000"/></div>
+            <div class="field-group"><label>Email</label><input type="email" placeholder="you@email.com"/></div>
+          </div>
+          <div class="field-group">
+            <label>Residential Area</label>
+            <input type="text" placeholder="e.g. Ntinda, Mukono, Entebbe…"/>
+          </div>
+          <div class="field-group">
+            <label>Which campus interests you?</label>
+            <select>
+              <option value="">Select campus…</option>
+              <option>Main — Kampala Road</option>
+              <option>Ntinda Campus</option>
+              <option>Mukono Campus</option>
+              <option>Online / Global</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Are you interested in any of these ministries?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="checkbox"/> Youth</label>
+              <label class="check-item"><input type="checkbox"/> Women</label>
+              <label class="check-item"><input type="checkbox"/> Men</label>
+              <label class="check-item"><input type="checkbox"/> Children's Church</label>
+              <label class="check-item"><input type="checkbox"/> Worship Team</label>
+              <label class="check-item"><input type="checkbox"/> Ushering</label>
+              <label class="check-item"><input type="checkbox"/> Prayer Team</label>
+              <label class="check-item"><input type="checkbox"/> Media</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Your Faith Journey</label>
+            <textarea placeholder="Tell us a little about yourself — where you are in your faith and what draws you to Mission Church…" style="min-height:110px;"></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitForm(this)">Submit Membership Application →</button>
+        </div>
+
+        <!-- GENERAL TAB -->
+        <div class="form-pane" id="pane-general">
+          <div class="field-row">
+            <div class="field-group"><label>Name</label><input type="text" placeholder="Your name"/></div>
+            <div class="field-group"><label>Email</label><input type="email" placeholder="you@email.com"/></div>
+          </div>
+          <div class="field-group">
+            <label>Subject</label>
+            <select>
+              <option value="">Select a topic…</option>
+              <option>General Enquiry</option>
+              <option>Counselling Request</option>
+              <option>Partnership / Sponsorship</option>
+              <option>Media & Press</option>
+              <option>Venue Hire</option>
+              <option>Volunteer Opportunities</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Your Message</label>
+            <textarea placeholder="Write your message here…" style="min-height:140px;"></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitForm(this)">Send Message →</button>
+        </div>
+
+        <!-- Success state -->
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">🙌</div>
+          <h3>Message Received!</h3>
+          <p>Thank you for reaching out. A member of our team will be in touch very soon.<br><br>God bless you!</p>
+          <button class="submit-btn" style="margin-top:24px;max-width:220px;" onclick="resetForm()">Send Another</button>
+        </div>
+      </div>
+
+      <!-- SIDE INFO -->
+      <div class="anim-right">
+        <div class="section-eyebrow" style="justify-content:flex-start;">Find Us</div>
+        <h3 style="font-size:1.8rem;color:var(--text);margin-bottom:12px;">We Are <em class="gradient-text" style="font-style:normal;">Easy to Find</em></h3>
+        <p style="margin-bottom:28px;">Our main campus sits right in the heart of Kampala. We also have campuses in Ntinda and Mukono — plus our live online church for those joining from anywhere in the world.</p>
+
+        <!-- Campuses -->
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:white;border:1px solid var(--rim);border-radius:6px;box-shadow:0 2px 12px rgba(26,18,8,.05);">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">🏛</div>
+            <div><strong style="display:block;font-size:.88rem;color:var(--text);margin-bottom:3px;">Main Campus — Kampala Road</strong><span style="font-size:.78rem;color:var(--text-mute);">Plot 14 Kampala Road, Kampala · 8AM, 10AM, 12PM Sunday</span></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:white;border:1px solid var(--rim);border-radius:6px;box-shadow:0 2px 12px rgba(26,18,8,.05);">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">🏘</div>
+            <div><strong style="display:block;font-size:.88rem;color:var(--text);margin-bottom:3px;">Ntinda Campus</strong><span style="font-size:.78rem;color:var(--text-mute);">Ntinda Complex, Kampala · 9AM & 11AM Sunday</span></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:white;border:1px solid var(--rim);border-radius:6px;box-shadow:0 2px 12px rgba(26,18,8,.05);">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">🏠</div>
+            <div><strong style="display:block;font-size:.88rem;color:var(--text);margin-bottom:3px;">Mukono Campus</strong><span style="font-size:.78rem;color:var(--text-mute);">Mukono Town, Eastern Uganda · 10AM Sunday</span></div>
+          </div>
+        </div>
+
+        <!-- Service times -->
+        <div class="side-service-times">
+          <h4>⏰ This Week's Services</h4>
+          <div class="sst-row"><span class="sst-day">Sunday — Main Service</span><span class="sst-time">8AM · 10AM · 12PM</span></div>
+          <div class="sst-row"><span class="sst-day">Wednesday Bible Study</span><span class="sst-time">6:30 PM</span></div>
+          <div class="sst-row"><span class="sst-day">Friday Prayer Night</span><span class="sst-time">7:00 PM</span></div>
+          <div class="sst-row"><span class="sst-day">Online (YouTube / Facebook)</span><span class="sst-time">LIVE Sunday 10AM</span></div>
+        </div>
+
+        <!-- Social links -->
+        <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:white;border:1px solid var(--rim);border-radius:4px;font-size:.75rem;font-weight:700;color:var(--text-dim);transition:var(--transition);" onmouseover="this.style.borderColor='var(--gold2)';this.style.color='var(--gold-dark)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text-dim)'">📘 Facebook</a>
+          <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:white;border:1px solid var(--rim);border-radius:4px;font-size:.75rem;font-weight:700;color:var(--text-dim);transition:var(--transition);" onmouseover="this.style.borderColor='var(--gold2)';this.style.color='var(--gold-dark)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text-dim)'">📷 Instagram</a>
+          <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:white;border:1px solid var(--rim);border-radius:4px;font-size:.75rem;font-weight:700;color:var(--text-dim);transition:var(--transition);" onmouseover="this.style.borderColor='var(--gold2)';this.style.color='var(--gold-dark)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text-dim)'">▶ YouTube</a>
+          <a href="https://wa.me/256700000000" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:white;border:1px solid var(--rim);border-radius:4px;font-size:.75rem;font-weight:700;color:var(--text-dim);transition:var(--transition);" onmouseover="this.style.borderColor='var(--gold2)';this.style.color='var(--gold-dark)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text-dim)'">💬 WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     HEART-SHAPED GOOGLE MAP
+══════════════════════════════════ -->
+<section class="map-section">
+  <div class="container">
+    <div class="section-eyebrow anim-up">We Are Here</div>
+    <h2 class="section-title anim-up delay-1" style="color:var(--text);">Find Us on the <em class="gradient-text" style="font-style:normal;">Map</em></h2>
+    <p class="section-sub anim-up delay-2" style="margin-bottom:56px;">Right in the heart of Kampala — come home.</p>
+
+    <!-- Hidden SVG clip paths -->
+    <svg class="heart-clip-svg" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
+          <!-- Heart path normalised to 0..1 bounding box -->
+          <path d="M0.5,0.93 C0.5,0.93 0.05,0.58 0.05,0.35 C0.05,0.18 0.18,0.07 0.32,0.07 C0.40,0.07 0.47,0.12 0.5,0.18 C0.53,0.12 0.60,0.07 0.68,0.07 C0.82,0.07 0.95,0.18 0.95,0.35 C0.95,0.58 0.5,0.93 0.5,0.93 Z"/>
+        </clipPath>
+        <clipPath id="heartClipOuter" clipPathUnits="objectBoundingBox">
+          <path d="M0.5,0.97 C0.5,0.97 0.01,0.60 0.01,0.35 C0.01,0.15 0.16,0.03 0.31,0.03 C0.40,0.03 0.47,0.08 0.5,0.14 C0.53,0.08 0.60,0.03 0.69,0.03 C0.84,0.03 0.99,0.15 0.99,0.35 C0.99,0.60 0.5,0.97 0.5,0.97 Z"/>
+        </clipPath>
+      </defs>
+    </svg>
+
+    <div class="heart-map-wrap anim-scale" id="heartMapSection">
+      <!-- Gold glow outline -->
+      <div class="heart-outline"></div>
+
+      <div class="heart-frame">
+        <!-- Google Maps embed — Kampala, Uganda -->
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.757627547219!2d32.5811!3d0.3152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbc0f9c07c7b1%3A0x45b3e9f5451a8cc1!2sKampala%2C%20Uganda!5e0!3m2!1sen!2sug!4v1715000000000!5m2!1sen!2sug"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mission Church Africa — Kampala Uganda">
+        </iframe>
+      </div>
+
+      <!-- Floating hearts -->
+      <div class="floating-hearts">
+        <span class="fheart">❤️</span>
+        <span class="fheart">🧡</span>
+        <span class="fheart">💛</span>
+        <span class="fheart">❤️</span>
+        <span class="fheart">✨</span>
+      </div>
+    </div>
+
+    <!-- Address cards -->
+    <div class="map-address-cards anim-up">
+      <div class="addr-card">
+        <div class="addr-card-icon">🏛</div>
+        <h4>Main Campus</h4>
+        <p>Plot 14 Kampala Road<br>Kampala, Uganda</p>
+      </div>
+      <div class="addr-card">
+        <div class="addr-card-icon">🚗</div>
+        <h4>Getting Here</h4>
+        <p>5 min from Clock Tower<br>Parking available on-site</p>
+      </div>
+      <div class="addr-card">
+        <div class="addr-card-icon">🚌</div>
+        <h4>By Boda / Taxi</h4>
+        <p>Tell driver: "Mission Church<br>Kampala Road"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRAYER REQUEST -->
+<section class="prayer-section" id="prayer">
+  <div class="container">
+    <div class="prayer-grid">
+      <div class="prayer-left anim-left">
+        <div class="section-eyebrow" style="justify-content:flex-start;color:rgba(245,216,122,.7);">Prayer Works</div>
+        <h2>Submit a <em class="gradient-text" style="font-style:normal;">Prayer Request</em></h2>
+        <p>Our prayer team intercedes for every request submitted. You are not alone — we stand with you in faith.</p>
+        <div class="prayer-verse">
+          "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."
+          <cite>— Philippians 4:6</cite>
+        </div>
+      </div>
+      <div class="prayer-form-box anim-right">
+        <div class="section-eyebrow" style="justify-content:flex-start;">We are believing with you</div>
+        <h3 style="font-size:1.5rem;margin-bottom:24px;color:var(--text);">Your Prayer Request</h3>
+        <div class="field-group"><label>Your Name</label><input type="text" placeholder="First name is fine"/></div>
+        <div class="field-group"><label>Phone / WhatsApp (Optional)</label><input type="tel" placeholder="+256 700 000 000"/></div>
+        <div class="field-group">
+          <label>Prayer Category</label>
+          <select>
+            <option value="">Choose category…</option>
+            <option>Health & Healing</option>
+            <option>Family & Relationships</option>
+            <option>Finances & Provision</option>
+            <option>Career & Purpose</option>
+            <option>Salvation of Loved One</option>
+            <option>Mental & Emotional Wellbeing</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Your Prayer Request</label>
+          <textarea placeholder="Share your heart — our prayer team treats all requests with absolute confidentiality." style="min-height:130px;"></textarea>
+        </div>
+        <label class="check-item" style="margin-bottom:18px;display:flex;">
+          <input type="checkbox" style="margin-right:8px;accent-color:var(--gold2);"/>
+          I would like the prayer team to follow up with me personally
+        </label>
+        <button class="submit-btn" onclick="submitPrayer(this)">🙏 Submit Prayer Request</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<!-- FLOATING ORBIT BUTTONS -->
+<div class="fab-orbit-wrap" id="fabOrbitWrap">
+  <a href="#" class="fab-donate" id="fabDonate" onclick="openDonateModal(event)">
+    <div class="fab-donate-btn">❤️</div>
+    <span class="fab-donate-label">Donate</span>
+  </a>
+  <a href="https://wa.me/256700000000" target="_blank" class="fab-whatsapp" id="fabWhatsapp">
+    <div class="fab-wa-btn">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M11.99 2C6.478 2 2 6.477 2 11.99c0 1.852.516 3.588 1.414 5.072L2 22l5.068-1.386A9.942 9.942 0 0011.99 22C17.5 22 22 17.522 22 12.01 22 6.5 17.5 2 11.99 2zm0 18.18a8.15 8.15 0 01-4.15-1.136l-.298-.178-3.009.822.85-2.938-.194-.305A8.16 8.16 0 013.82 12c0-4.51 3.67-8.18 8.17-8.18 4.5 0 8.17 3.67 8.17 8.18s-3.67 8.18-8.17 8.18z"/>
+      </svg>
+    </div>
+    <span class="fab-wa-label">WhatsApp</span>
+  </a>
 </div>
 
+<!-- Donate Modal -->
+<div class="giving-modal" id="donateModal">
+  <div class="giving-box">
+    <div class="modal-close" onclick="closeDonateModal()">✕</div>
+    <div class="section-eyebrow" style="justify-content:flex-start;">Give to God's Work</div>
+    <h2 style="font-size:2rem;margin-bottom:8px;">Support <em class="gradient-text" style="font-style:normal;">Mission Church</em></h2>
+    <p style="font-size:.9rem;">Your generosity builds the Kingdom. Every gift makes an eternal difference.</p>
+    <div class="giving-grid">
+      <div class="give-method"><div class="give-method-logo">📱</div><div><strong>MTN Mobile Money</strong><p>+256 700 000 000</p><span>Send to: Mission Church Africa</span></div></div>
+      <div class="give-method"><div class="give-method-logo">📱</div><div><strong>Airtel Money</strong><p>+256 750 000 000</p><span>Send to: Mission Church Africa</span></div></div>
+      <div class="give-method"><div class="give-method-logo">🏦</div><div><strong>Bank Transfer</strong><p>Stanbic Bank Uganda</p><span>Acc: 9030012345678</span></div></div>
+      <div class="give-method"><div class="give-method-logo">💳</div><div><strong>Online Giving</strong><p>Via Paystack / Flutterwave</p><span>Secure card payments accepted</span></div></div>
+    </div>
+    <p style="margin-top:28px;font-size:.78rem;text-align:center;color:var(--text-mute);">🔒 All transactions are secure. Thank you for your faithfulness!</p>
+  </div>
+</div>
 
-
-
-
-
-<div class="footer-bottom">© 2026 Zion International Pentecostal Church</div>
-</footer>
- </section>
-
-<a class="whatsapp" href="#"><i class="fab fa-whatsapp"></i></a>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
-
+<script src="nav-footer.js"></script>
+<script src="shared.js"></script>
 <script>
-
-
-function showStep(index){
-steps.forEach(s=>s.classList.remove("active"));
-steps[index].classList.add("active");
-progress.style.width=((index)/(steps.length-1))*100+"%";
+// ── FORM TABS ──
+function switchTab(name) {
+  document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('formSuccess').style.display = 'none';
+  event.target.classList.add('active');
+  document.getElementById('pane-' + name).classList.add('active');
 }
 
-function nextStep(){
-if(currentStep<steps.length-1){
-currentStep++;
-showStep(currentStep);
+// ── FORM SUBMIT ──
+function submitForm(btn) {
+  const panel = btn.closest('.form-panel');
+  panel.querySelectorAll('.form-tab, .form-pane').forEach(el => el.style.display = 'none');
+  document.getElementById('formSuccess').style.display = 'block';
 }
+function resetForm() {
+  document.querySelectorAll('.form-tab').forEach(t => t.style.display = '');
+  document.querySelectorAll('.form-pane').forEach(p => { p.style.display = ''; p.classList.remove('active'); });
+  document.querySelectorAll('.form-tabs .form-tab')[0].classList.add('active');
+  document.getElementById('pane-visit').classList.add('active');
+  document.getElementById('formSuccess').style.display = 'none';
 }
 
-function closePopup(){
-document.getElementById("popup").style.display="none";
+// ── PRAYER SUBMIT ──
+function submitPrayer(btn) {
+  btn.textContent = '✅ Request Submitted — We Are Praying!';
+  btn.style.background = 'linear-gradient(135deg,#1a5e2f,#27ae60)';
+  btn.disabled = true;
 }
 
+// ── DONATE MODAL ──
+function openDonateModal(e) { e.preventDefault(); document.getElementById('donateModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeDonateModal() { document.getElementById('donateModal').classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('donateModal').addEventListener('click', e => { if(e.target === e.currentTarget) closeDonateModal(); });
 
+// ══════════════════════════════════════════
+// ORBIT ANIMATION
+// ══════════════════════════════════════════
+(function() {
+  const donate = document.getElementById('fabDonate');
+  const wa     = document.getElementById('fabWhatsapp');
+  const MARGIN_X = 24, MARGIN_Y = 24;
+  let donateP = 0, waP = 0.15;
+  const SPEED = 60;
+  let lastTime = null;
 
+  function perimeterToXY(t) {
+    const W = window.innerWidth, H = window.innerHeight;
+    const top = W - MARGIN_X * 2, right = H - MARGIN_Y * 2;
+    const bottom = W - MARGIN_X * 2, left = H - MARGIN_Y * 2;
+    const total = top + right + bottom + left;
+    const dist = ((t % 1) + 1) % 1 * total;
+    let x, y;
+    if (dist < top) { x = MARGIN_X + dist; y = MARGIN_Y; }
+    else if (dist < top + right) { x = W - MARGIN_X; y = MARGIN_Y + (dist - top); }
+    else if (dist < top + right + bottom) { x = W - MARGIN_X - (dist - top - right); y = H - MARGIN_Y; }
+    else { x = MARGIN_X; y = H - MARGIN_Y - (dist - top - right - bottom); }
+    return { x, y };
+  }
 
-
-/* INIT EMAILJS */
- (function(){ emailjs.init("611HalgS8FVqNQLRD"); })();
- 
- /* PHONE INPUT */
-  const phoneInput = window.intlTelInput(document.querySelector("#phone"),
-  { utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js" });
- 
- /* MULTI STEP LOGIC */ 
- 
- let currentStep = 0; const steps = document.querySelectorAll(".step");
-  const progress = document.getElementById("progress"); 
-  function showStep(index){ steps.forEach(s => s.classList.remove("active"));
-   steps[index].classList.add("active"); progress.style.width = ((index) / (steps.length - 1)) * 100 + "%"; }
-    function nextStep(){ if(currentStep < steps.length - 1){
-       currentStep++; showStep(currentStep);
-       } } 
-
-
- 
- /* POPUP */ 
- function showPopup(){ document.getElementById("popup").style.display = "flex"; }
-  function closePopup(){ document.getElementById("popup").style.display = "none"; } 
- 
- /* FORM SUBMIT */
-  document.getElementById("form").addEventListener("submit", 
-  function(e){ e.preventDefault(); let data = new FormData(this); 
-    const params = { name: data.get("name"), other: data.get("other"), phone: phoneInput.getNumber(), email: data.get("email"), address: data.get("address"), age: data.get("age"), sex: data.get("sex"),
-     country: data.get("country"), source: data.get("source"), 
-    reason: data.get("reason"), born: data.get("born") };
-     emailjs.send("service_dk6zkw8", "template_4ui5grj", params) .then(() => { showPopup();
-       this.reset(); currentStep = 0; showStep(0); }) .catch(error => { alert("Failed to send. Check EmailJS setup.");
-        console.error(error); }); }); 
-
-
+  function frame(ts) {
+    if (!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000; lastTime = ts;
+    const perim = 2*(window.innerWidth - MARGIN_X*2) + 2*(window.innerHeight - MARGIN_Y*2);
+    const step = (SPEED * dt) / perim;
+    donateP = (donateP + step) % 1;
+    waP     = (waP + step) % 1;
+    const dPos = perimeterToXY(donateP);
+    const wPos = perimeterToXY(waP);
+    donate.style.left = (dPos.x - 31) + 'px';
+    donate.style.top  = (dPos.y - 38) + 'px';
+    wa.style.left     = (wPos.x - 26) + 'px';
+    wa.style.top      = (wPos.y - 34) + 'px';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 </script>
-
 </body>
 </html>
