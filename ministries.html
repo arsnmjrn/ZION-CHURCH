@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZION INTERNATIONAL PENTECOSTAL AFRICA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+
+
+:root {
+  --gold: #b8860b; --gold2: #d4a017; --gold-dark: #8b6508;
+  --cream: #faf8f3; --parchment: #f5f0e8;
+  --text: #1a1208; --text-dim: #4a3f2f; --text-mute: #8a7a6a;
+  --rim: #e8e0d0; --rim2: #c8b898; --crimson: #8b1a1a;
+  --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  --glow: 0 20px 60px rgba(184,134,11,0.18);
+  --font-body: 'Cormorant Garamond', Georgia, serif;
+  --font-ui: 'Outfit', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-ui);background:var(--cream);color:var(--text);}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+
+/* ── PAGE HERO ── */
+.page-hero{position:relative;height:440px;display:flex;align-items:flex-end;padding-bottom:70px;overflow:hidden;}
+.page-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.05);transition:transform 8s ease;}
+.page-hero:hover .page-hero-bg{transform:scale(1);}
+.page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,6,2,0.88)0%,rgba(10,6,2,0.4)55%,transparent 100%);}
+.container{max-width:1240px;margin:0 auto;padding:0 32px;position:relative;z-index:2;}
+.breadcrumb{font-size:0.72rem;color:rgba(255,255,255,0.6);letter-spacing:0.1em;margin-bottom:12px;}
+.breadcrumb a{color:rgba(255,255,255,0.6);} .breadcrumb i{margin:0 6px;}
+.section-eyebrow{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold2);display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.section-eyebrow::before{content:'';width:28px;height:1px;background:currentColor;}
+h1{font-family:var(--font-body);font-size:3.2rem;color:white;line-height:1.1;font-weight:300;}
+.gradient-text{background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ── BTN ── */
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-weight:600;letter-spacing:0.1em;cursor:pointer;transition:var(--transition);border-radius:2px;border:none;}
+.btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold2));color:white;padding:12px 28px;font-size:0.75rem;box-shadow:0 4px 20px rgba(184,134,11,0.3);}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(184,134,11,0.45);}
+.btn-outline{background:transparent;border:1px solid var(--rim2);color:var(--text-dim);padding:12px 28px;font-size:0.75rem;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-dark);background:rgba(184,134,11,0.05);}
+
+/* ── SECTION WRAPPERS ── */
+.section{padding:90px 0;}
+.section-title{font-family:var(--font-body);font-size:2.3rem;font-weight:300;line-height:1.15;margin-bottom:14px;}
+.section-sub{font-size:0.9rem;color:var(--text-dim);max-width:560px;margin:0 auto 52px;text-align:center;line-height:1.75;}
+
+/* ── DIVIDER ORNAMENT ── */
+.ornament{display:flex;align-items:center;justify-content:center;gap:16px;margin:20px 0 52px;}
+.ornament::before,.ornament::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rim2));}
+.ornament::after{background:linear-gradient(to left,transparent,var(--rim2));}
+.ornament-icon{color:var(--gold);font-size:1.1rem;}
+
+/* ═══════════════════════════════════════════════════════════
+   MINISTRY HERO CARDS
+   ═══════════════════════════════════════════════════════════ */
+.ministry-hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:80px;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(26,18,8,0.12);}
+.mhero-card{position:relative;height:440px;overflow:hidden;cursor:pointer;}
+.mhero-card .bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);}
+.mhero-card:hover .bg{transform:scale(1.08);}
+.mhero-card .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,6,2,0.88)0%,rgba(10,6,2,0.3)55%,transparent 100%);transition:var(--transition);}
+.mhero-card:hover .overlay{background:linear-gradient(to top,rgba(10,6,2,0.92)0%,rgba(10,6,2,0.5)60%,rgba(10,6,2,0.1) 100%);}
+.mhero-card .content{position:absolute;bottom:0;left:0;right:0;padding:32px 28px;transform:translateY(0);transition:transform 0.4s ease;}
+.mhero-icon{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:14px;box-shadow:0 4px 20px rgba(184,134,11,0.4);}
+.mhero-card h3{font-family:var(--font-body);font-size:1.5rem;color:white;margin-bottom:8px;font-weight:400;}
+.mhero-card p{font-size:0.82rem;color:rgba(255,255,255,0.75);line-height:1.6;max-height:0;overflow:hidden;opacity:0;transition:max-height 0.4s ease,opacity 0.4s ease,margin 0.4s;}
+.mhero-card:hover p{max-height:100px;opacity:1;margin-top:8px;}
+.mhero-card .join-link{display:inline-block;margin-top:14px;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold2);border-bottom:1px solid var(--gold2);padding-bottom:2px;opacity:0;transform:translateY(8px);transition:opacity 0.3s ease 0.1s,transform 0.3s ease 0.1s;}
+.mhero-card:hover .join-link{opacity:1;transform:translateY(0);}
+
+/* ═══════════════════════════════════════════════════════════
+   MINISTRY DETAIL CARDS
+   ═══════════════════════════════════════════════════════════ */
+.ministries-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-bottom:24px;}
+.min-card{background:white;border:1px solid var(--rim);border-radius:8px;overflow:hidden;transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.45s,border-color 0.3s;position:relative;}
+.min-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold2),var(--gold-dark));transform:scaleX(0);transition:transform 0.4s ease;transform-origin:left;}
+.min-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 30px 60px rgba(26,18,8,0.13),0 0 0 1px var(--gold);border-color:var(--gold);}
+.min-card:hover::before{transform:scaleX(1);}
+.min-card-img{height:190px;overflow:hidden;background:var(--parchment);position:relative;}
+.min-card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.55s;}
+.min-card:hover .min-card-img img{transform:scale(1.08);}
+.min-card-body{padding:26px;}
+.min-tag{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.min-card h3{font-family:var(--font-body);font-size:1.15rem;color:var(--text);margin-bottom:10px;font-weight:600;line-height:1.3;}
+.min-card p{font-size:0.82rem;color:var(--text-dim);margin-bottom:18px;line-height:1.65;}
+.min-card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--rim);padding-top:16px;}
+.min-leader{display:flex;align-items:center;gap:8px;}
+.min-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;color:white;flex-shrink:0;}
+.min-leader-name{font-size:0.75rem;color:var(--text-dim);}
+.min-join-btn{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dark);border:1px solid var(--gold);padding:5px 12px;border-radius:2px;cursor:pointer;transition:var(--transition);background:none;font-family:var(--font-ui);font-weight:600;}
+.min-join-btn:hover{background:var(--gold);color:white;}
+
+/* ═══════════════════════════════════════════════════════════
+   MINISTRY FEATURE BLOCKS
+   ═══════════════════════════════════════════════════════════ */
+.ministry-feature{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:8px;overflow:hidden;margin-bottom:40px;box-shadow:0 8px 40px rgba(26,18,8,0.09);border:1px solid var(--rim2);transition:var(--transition);}
+.ministry-feature:hover{box-shadow:var(--glow);}
+.ministry-feature.reverse{direction:rtl;}
+.ministry-feature.reverse > *{direction:ltr;}
+.mf-img{position:relative;min-height:360px;overflow:hidden;}
+.mf-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s;}
+.ministry-feature:hover .mf-img img{transform:scale(1.06);}
+.mf-content{background:white;padding:52px 44px;display:flex;flex-direction:column;justify-content:center;}
+.mf-content .eyebrow{font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.mf-content h2{font-family:var(--font-body);font-size:2rem;color:var(--text);margin-bottom:16px;font-weight:400;line-height:1.2;}
+.mf-content p{font-size:0.88rem;color:var(--text-dim);margin-bottom:24px;line-height:1.75;}
+.mf-bullets{list-style:none;margin-bottom:28px;}
+.mf-bullets li{font-size:0.84rem;color:var(--text-dim);padding:6px 0;display:flex;align-items:center;gap:10px;}
+.mf-bullets li::before{content:'✦';color:var(--gold);font-size:0.55rem;flex-shrink:0;}
+.mf-leader{display:flex;align-items:center;gap:12px;border-top:1px solid var(--rim);padding-top:20px;margin-top:4px;}
+.mf-leader-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;color:white;}
+.mf-leader-info small{font-size:0.68rem;color:var(--text-mute);letter-spacing:0.08em;text-transform:uppercase;}
+.mf-leader-info strong{display:block;font-size:0.88rem;color:var(--text);}
+
+/* ═══════════════════════════════════════════════════════════
+   STATS STRIP
+   ═══════════════════════════════════════════════════════════ */
+.stats-strip{background:linear-gradient(135deg,var(--text) 0%,#2a1e0a 100%);padding:60px 0;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center;}
+.stat-num{font-family:var(--font-body);font-size:3rem;font-weight:300;color:var(--gold2);display:block;line-height:1;}
+.stat-label{font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:8px;display:block;}
+
+/* ── CTA BANNER ── */
+.cta-banner{background:linear-gradient(135deg,var(--parchment),var(--cream));border:1px solid var(--rim2);border-radius:8px;padding:60px 40px;text-align:center;margin-top:70px;}
+.cta-banner h2{font-family:var(--font-body);font-size:2.2rem;color:var(--text);margin-bottom:14px;font-weight:300;}
+.cta-banner p{font-size:0.9rem;color:var(--text-dim);margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7;}
+
+/* ── ANIMATIONS ── */
+.anim-up{opacity:0;transform:translateY(30px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.anim-up.visible{opacity:1;transform:translateY(0);}
+.delay-1{transition-delay:0.1s;} .delay-2{transition-delay:0.2s;} .delay-3{transition-delay:0.3s;} .delay-4{transition-delay:0.4s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .ministry-hero-grid{grid-template-columns:1fr;}
+  .mhero-card{height:300px;}
+  .ministries-grid{grid-template-columns:1fr 1fr;}
+  .ministry-feature,.ministry-feature.reverse{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  h1{font-size:2.4rem;}
+}
+@media(max-width:600px){
+  .ministries-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  h1{font-size:1.9rem;}
+}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('temp_8.jpg');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="container">
+    <div style="max-width:640px;">
+      <div class="breadcrumb"><a href="index.html">Home</a><i>›</i><span>Ministries</span></div>
+      <div class="section-eyebrow" style="color:rgba(245,216,122,0.85);">Serving Together</div>
+      <h1>Our <em class="gradient-text" style="font-style:normal;">Ministries</em></h1>
+      <p style="max-width:500px;margin-top:14px;color:rgba(255,255,255,0.75);font-family:var(--font-ui);font-size:0.95rem;line-height:1.7;">
+        Every person is called. Every gift is needed. Discover where you belong and how you can make an eternal difference.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- FEATURED HERO MINISTRIES -->
+<section class="section" style="background:white;padding-bottom:0;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:44px;">
+      <div class="section-eyebrow" style="justify-content:center;">Highlighted Ministries</div>
+      <h2 class="section-title anim-up">Where Hearts <em class="gradient-text" style="font-style:normal;">Come Alive</em></h2>
+      <p class="section-sub anim-up delay-1">Three of our most active ministries — and the many more you can plug into.</p>
+    </div>
+
+    <div class="ministry-hero-grid anim-up delay-2">
+
+      <!-- HERO CARD 1 — Prayer Ministry -->
+      <div class="mhero-card">
+        <div class="bg" style="background-image:url('temp_10.jpg');"></div>
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="mhero-icon">🙏</div>
+          <h3>Prayer Ministry</h3>
+          <p>Interceding for our church, city, and nation through consistent, passionate prayer.</p>
+          <a href="#prayer" class="join-link">Join This Ministry →</a>
+        </div>
+      </div>
+
+      <!-- HERO CARD 2 — Worship & Arts -->
+      <div class="mhero-card">
+        <div class="bg" style="background-image:url('temp_11.jpg');background-position:top;"></div>
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="mhero-icon">🎶</div>
+          <h3>Worship &amp; Arts</h3>
+          <p>Leading the church into God's presence through music, creativity, and excellence.</p>
+          <a href="#worship" class="join-link">Join This Ministry →</a>
+        </div>
+      </div>
+
+      <!-- HERO CARD 3 — Outreach & Missions -->
+      <div class="mhero-card">
+        <div class="bg" style="background-image:url('temp_12.jpg');background-position:bottom;"></div>
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="mhero-icon">🌍</div>
+          <h3>Outreach &amp; Missions</h3>
+          <p>Taking the Gospel beyond our walls into communities, prisons, and unreached places.</p>
+          <a href="#outreach" class="join-link">Join This Ministry →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="anim-up">
+        <span class="stat-num">12+</span>
+        <span class="stat-label">Active Ministries</span>
+      </div>
+      <div class="anim-up delay-1">
+        <span class="stat-num">500+</span>
+        <span class="stat-label">Volunteers Serving</span>
+      </div>
+      <div class="anim-up delay-2">
+        <span class="stat-num">15+</span>
+        <span class="stat-label">Years of Impact</span>
+      </div>
+      <div class="anim-up delay-3">
+        <span class="stat-num">1000+</span>
+        <span class="stat-label">Lives Transformed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ALL MINISTRIES GRID -->
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div class="section-eyebrow" style="justify-content:center;">All Ministries</div>
+      <h2 class="section-title anim-up">Find Your <em class="gradient-text" style="font-style:normal;">Place to Serve</em></h2>
+    </div>
+    <div class="ornament"><span class="ornament-icon">✦</span></div>
+
+    <div class="ministries-grid">
+
+      <!-- ── MINISTRY CARD 1 — Prayer Ministry ── -->
+      <div class="min-card anim-up delay-1" id="prayer">
+        <div class="min-card-img">
+          <img src="temp_19.jpg" alt="Prayer Ministry"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Intercession</div>
+          <h3>Prayer Ministry</h3>
+          <p>Our prayer team stands in the gap for individuals, families, our city, and the nations. We meet weekly for corporate intercession and deploy prayer teams during services.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">PK</div>
+              <div class="min-leader-name">Pastor Kenneth</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 2 — Worship Team ── -->
+      <div class="min-card anim-up delay-2" id="worship">
+        <div class="min-card-img">
+          <img src="temp_20.jpg" alt="Praise & Worship Team"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Worship &amp; Arts</div>
+          <h3>Praise &amp; Worship Team</h3>
+          <p>We lead the congregation into the manifest presence of God through music, song, dance, and creative arts. Rehearsals are held every Saturday.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">PM</div>
+              <div class="min-leader-name">Pastor Mary</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 3 — Outreach ── -->
+      <div class="min-card anim-up delay-3" id="outreach">
+        <div class="min-card-img">
+          <img src="temp_21.jpg" alt="Outreach & Missions"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Evangelism</div>
+          <h3>Outreach &amp; Missions</h3>
+          <p>We carry the Gospel beyond church walls into communities, prisons, schools, hospitals, and unreached villages. Monthly outreach missions available for all.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">BD</div>
+              <div class="min-leader-name">Bishop David</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 4 — Children's Ministry ── -->
+      <div class="min-card anim-up delay-1" id="children">
+        <div class="min-card-img">
+          <img src="temp_22.jpg" alt="Children's Ministry"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Children</div>
+          <h3>Children's Ministry</h3>
+          <p>Raising the next generation in the ways of God through age-appropriate worship, Bible study, and creative discipleship. We believe children are not the church of tomorrow — they are the church today.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">SN</div>
+              <div class="min-leader-name">Sister Nankya</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 5 — Youth Ministry ── -->
+      <div class="min-card anim-up delay-2" id="youth">
+        <div class="min-card-img">
+          <img src="temp_23.jpg" alt="Youth Ministry"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Youth</div>
+          <h3>Youth Ministry — Fire Generation</h3>
+          <p>A movement of young people on fire for God. We meet every Friday evening for worship, the Word, and authentic community. Ages 13–35 welcome.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">PK</div>
+              <div class="min-leader-name">Pastor Kenneth</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 6 — Women of Destiny ── -->
+      <div class="min-card anim-up delay-3" id="women">
+        <div class="min-card-img">
+          <img src="temp_24.jpg" alt="Women of Destiny"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Women</div>
+          <h3>Women of Destiny</h3>
+          <p>Empowering women to discover their identity, purpose, and calling in Christ. Monthly fellowship, mentorship, and community outreach initiatives.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">PM</div>
+              <div class="min-leader-name">Pastor Mary</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 7 — Men of Valour ── -->
+      <div class="min-card anim-up delay-1" id="men">
+        <div class="min-card-img">
+          <img src="temp_25.jpg" alt="Men of Valour"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Men</div>
+          <h3>Men of Valour</h3>
+          <p>Building men of integrity, purpose, and godly leadership — in their homes, workplaces, and communities. Quarterly retreats and monthly gatherings.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">BD</div>
+              <div class="min-leader-name">Bishop David</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 8 — Media Ministry ── -->
+      <div class="min-card anim-up delay-2" id="media">
+        <div class="min-card-img">
+          <img src="temp_26.jpg" alt="Media Ministry"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Media &amp; Technology</div>
+          <h3>Media Ministry</h3>
+          <p>Amplifying the Gospel through video production, live streaming, photography, social media, and creative digital content. Tech-savvy volunteers needed.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">BM</div>
+              <div class="min-leader-name">Bro. Michael</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 9 — Hospitality ── -->
+      <div class="min-card anim-up delay-3" id="hospitality">
+        <div class="min-card-img">
+          <img src="temp_27.jpg" alt="Ushering & Hospitality"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Hospitality</div>
+          <h3>Ushering &amp; Hospitality</h3>
+          <p>Creating a warm, welcoming environment where every visitor feels seen, valued, and at home. Our ushers are the first face of Mission Church Africa.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">SG</div>
+              <div class="min-leader-name">Sis. Grace</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 10 — Care & Counselling ── -->
+      <div class="min-card anim-up delay-1" id="care">
+        <div class="min-card-img">
+          <img src="temp_28.jpg" alt="Care & Counselling"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Pastoral Care</div>
+          <h3>Care &amp; Counselling</h3>
+          <p>Walking alongside people through grief, crisis, and life transitions with Spirit-led biblical counselling and community care.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">PM</div>
+              <div class="min-leader-name">Pastor Mary</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 11 — Home Cell Groups ── -->
+      <div class="min-card anim-up delay-2" id="small-groups">
+        <div class="min-card-img">
+          <img src="temp_29.jpg" alt="Home Cell Groups"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Community</div>
+          <h3>Home Cell Groups</h3>
+          <p>Smaller gatherings throughout the week where church members grow deeper in the Word, build lasting friendships, and carry one another's burdens.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">BD</div>
+              <div class="min-leader-name">Bishop David</div>
+            </div>
+            <button class="min-join-btn">Find a Cell</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MINISTRY CARD 12 — Community Development ── -->
+      <div class="min-card anim-up delay-3" id="social">
+        <div class="min-card-img">
+          <img src="temp_30.jpg" alt="Community Development"/>
+        </div>
+        <div class="min-card-body">
+          <div class="min-tag">Social Impact</div>
+          <h3>Community Development</h3>
+          <p>Addressing poverty, education, and social justice through practical love — food distributions, school sponsorships, and widow/orphan support programmes.</p>
+          <div class="min-card-footer">
+            <div class="min-leader">
+              <div class="min-avatar">DN</div>
+              <div class="min-leader-name">Deacon Nsubuga</div>
+            </div>
+            <button class="min-join-btn">Join Us</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end .ministries-grid -->
+  </div>
+</section>
+
+
+<!-- MINISTRY FEATURE BLOCKS -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div class="section-eyebrow" style="justify-content:center;">Ministry Spotlight</div>
+      <h2 class="section-title anim-up">A Closer <em class="gradient-text" style="font-style:normal;">Look</em></h2>
+    </div>
+
+    <!-- FEATURE 1 — Prayer Ministry -->
+    <div class="ministry-feature anim-up">
+      <div class="mf-img">
+        <img src="temp_31.jpg" alt="Prayer Ministry"/>
+      </div>
+      <div class="mf-content">
+        <div class="eyebrow">Prayer Ministry</div>
+        <h2>A House of Prayer for All Nations</h2>
+        <p>Our prayer ministry is the engine room of Mission Church Africa. Before every service, our intercessors gather to prepare the atmosphere. We believe nothing significant happens without prayer first.</p>
+        <ul class="mf-bullets">
+          <li>Weekly corporate prayer every Tuesday 6–8 PM</li>
+          <li>24-hour prayer chain rotations during special seasons</li>
+          <li>Prayer counsellors available after every service</li>
+          <li>Annual three-day prayer &amp; fasting conference</li>
+        </ul>
+        <div class="mf-leader">
+          <div class="mf-leader-av">PK</div>
+          <div class="mf-leader-info">
+            <small>Ministry Leader</small>
+            <strong>Pastor Kenneth</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 2 — Outreach & Missions (reversed layout) -->
+    <div class="ministry-feature reverse anim-up delay-1">
+      <div class="mf-img">
+        <img src="temp_32.jpg" alt="Outreach & Missions"/>
+      </div>
+      <div class="mf-content">
+        <div class="eyebrow">Outreach &amp; Missions</div>
+        <h2>Taking the Gospel to Every Corner</h2>
+        <p>From Kampala's streets to rural villages in Uganda and beyond — our outreach teams go where the need is greatest. We partner with local leaders and international networks to see communities transformed.</p>
+        <ul class="mf-bullets">
+          <li>Monthly community outreach in Kampala slums</li>
+          <li>Prison ministry visiting correctional facilities</li>
+          <li>School evangelism and discipleship programmes</li>
+          <li>Hospital visitation and healing ministry</li>
+        </ul>
+        <div class="mf-leader">
+          <div class="mf-leader-av">BD</div>
+          <div class="mf-leader-info">
+            <small>Ministry Leader</small>
+            <strong>Bishop David Ssekamatte</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- CALL TO ACTION BANNER -->
+<section class="section" style="background:var(--cream);padding-top:0;">
+  <div class="container">
+    <div class="cta-banner anim-up">
+      <div class="section-eyebrow" style="justify-content:center;margin-bottom:16px;">Get Involved</div>
+      <h2>You Were Made to <em class="gradient-text" style="font-style:normal;">Make a Difference</em></h2>
+      <p>Every ministry has a seat for you. Whether you have five minutes or five hours a week — your unique gift is needed in God's house.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="form.html" class="btn btn-gold" style="font-size:0.78rem;padding:14px 32px;">Connect with a Ministry</a>
+        <a href="services.html" class="btn btn-outline" style="font-size:0.78rem;padding:14px 32px;">See Our Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="nav-footer.js"></script>
+<script src="shared.js"></script>
+<script>
+
+// ── SCROLL ANIMATIONS ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim-up').forEach(el => observer.observe(el));
+
+// ── JOIN BUTTON → CONTACT REDIRECT ──
+document.querySelectorAll('.min-join-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    window.location.href = 'form.html?ministry=' + encodeURIComponent(btn.closest('.min-card').querySelector('h3').textContent);
+  });
+});
+</script>
+</body>
+</html>
